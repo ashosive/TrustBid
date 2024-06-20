@@ -1,0 +1,29 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PredictionMarketFactory
+    network: arbitrum-sepolia
+    source:
+      address: "0x889C04906F963bC4CCDb1b106B4f3ba14D15E686"
+      abi: PredictionMarketFactory
+      startBlock: 56679240
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - OwnershipTransferred
+        - PredictionMarketCreated
+      abis:
+        - name: PredictionMarketFactory
+          file: ./abis/PredictionMarketFactory.json
+      eventHandlers:
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PredictionMarketCreated(indexed address,uint8,bytes32,uint256,uint256,indexed address)
+          handler: handlePredictionMarketCreated
+      file: ./src/prediction-market-factory.ts
