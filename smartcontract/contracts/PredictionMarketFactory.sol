@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import "./PredictionMarket.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -35,7 +35,7 @@ contract PredictionMarketFactory is Ownable {
      * @dev Constructor to initialize the PredictionMarketFactory with the ERC20 token address.
      * @param _tokenAddress Address of the ERC20 token used for betting in prediction markets.
      */
-    constructor(address _tokenAddress) {
+    constructor(address _tokenAddress, address _initOwner) Ownable(_initOwner) {
         tokenAddress = _tokenAddress;
     }
 
@@ -54,8 +54,7 @@ contract PredictionMarketFactory is Ownable {
         uint256 startTime,
         uint256 expirationTime
     ) public onlyOwner returns (address) {
-        PredictionMarket newMarket = new PredictionMarket(tokenAddress, numberOfOptions, eventHash, startTime, expirationTime);
-        newMarket.transferOwnership(msg.sender); // Transfer ownership to the creator
+        PredictionMarket newMarket = new PredictionMarket(tokenAddress, numberOfOptions, eventHash, startTime, expirationTime,msg.sender);
         emit PredictionMarketCreated(address(newMarket), numberOfOptions, eventHash, startTime, expirationTime, msg.sender);
         return address(newMarket);
     }

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -69,8 +69,9 @@ contract PredictionMarket is Ownable {
         uint8 _numberOfOptions,
         bytes32 _eventHash,
         uint256 _startTime,
-        uint256 _expirationTime
-    ) {
+        uint256 _expirationTime,
+        address _initOwner
+    ) Ownable(_initOwner) {
         require(_numberOfOptions > 1, "Number of options must be greater than 1");
         token = IERC20(_tokenAddress);
         numberOfOptions = _numberOfOptions;
