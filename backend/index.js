@@ -3,10 +3,23 @@ const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
 
-app.use(express.static(path.join(__dirname, 'public')))
+// routes
+const invalidRoutes = require("./src/api/routes/invalid.route");
+const tokenRoutes = require("./src/api/routes/token.route");
+
+// app.use(express.static(path.join(__dirname, 'public')));
+
+// req input phraser
+app.use(express.json());
+
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
+
+app.use(tokenRoutes);
+
+app.use(invalidRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
