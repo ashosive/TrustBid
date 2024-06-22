@@ -6,6 +6,7 @@ const path = require('path');
 // routes
 const invalidRoutes = require("./src/api/routes/invalid.route");
 const tokenRoutes = require("./src/api/routes/token.route");
+const subgraphRoutes = require("./src/api/routes/subgraph.route");
 
 // app.use(express.static(path.join(__dirname, 'public')));
 
@@ -18,6 +19,8 @@ app.get('/', (req, res) => {
 });
 
 app.use(tokenRoutes);
+
+app.use(subgraphRoutes);
 
 app.use(invalidRoutes);
 
