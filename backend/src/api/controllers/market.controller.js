@@ -1,9 +1,16 @@
+const { betService, claimService, userBetInfoService, totalBetsInfoService, marketInfoService } = require("../services/market.service");
 const { handleError, handleResponse } = require("../utils/responseHelper");
 
 
 const betController = async (req,res) => {
     try {
-        const result = await marketsService();
+        const { market, amount, option, from } = req.body;
+
+        if(!market || !amount || !option || !from) {
+            throw new TypeError("require body values market, amount, option, from ");
+        }
+
+        const result = await betService(market, amount, option, from);
 
         console.log("result txn ",result)
 
@@ -23,7 +30,13 @@ const betController = async (req,res) => {
 
 const claimController = async (req,res) => {
     try {
-        const result = await marketsService();
+        const { market, from } = req.body;
+
+        if(!from) {
+            throw new TypeError("require body values from");
+        }
+
+        const result = await claimService(market, from);
 
         console.log("result txn ",result)
 
@@ -43,7 +56,13 @@ const claimController = async (req,res) => {
 
 const userBetInfoController = async (req,res) => {
     try {
-        const result = await marketsService();
+        const { market, user } = req.body;
+
+        if(!market || !user) {
+            throw new TypeError("require body values market & user");
+        }
+
+        const result = await userBetInfoService(market, user);
 
         console.log("result txn ",result)
 
@@ -63,7 +82,13 @@ const userBetInfoController = async (req,res) => {
 
 const totalBetsInfoController = async (req,res) => {
     try {
-        const result = await marketsService();
+        const { market } = req.body;
+
+        if(!market) {
+            throw new TypeError("require body values market");
+        }
+
+        const result = await totalBetsInfoService(market);
 
         console.log("result txn ",result)
 
@@ -81,9 +106,15 @@ const totalBetsInfoController = async (req,res) => {
     }
 }
 
-const betInfoController = async (req,res) => {
+const marketInfoController = async (req,res) => {
     try {
-        const result = await marketsService();
+        const { market } = req.body;
+
+        if(!market) {
+            throw new TypeError("require body values market");
+        }
+
+        const result = await marketInfoService(market);
 
         console.log("result txn ",result)
 
@@ -101,4 +132,4 @@ const betInfoController = async (req,res) => {
     }
 }
 
-module.exports = { betController, claimController, userBetInfoController, totalBetsInfoController, betInfoController };
+module.exports = { betController, claimController, userBetInfoController, totalBetsInfoController, marketInfoController };

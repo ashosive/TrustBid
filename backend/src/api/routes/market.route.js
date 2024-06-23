@@ -1,11 +1,11 @@
 const express = require('express');
-const marketsController = require('../controllers/subgraph.controller');
+const { betController, claimController, userBetInfoController, totalBetsInfoController, marketInfoController } = require('../controllers/market.controller');
 const router = express.Router();
 
-router.post('/market/bet',marketsController);
-router.post('/market/claim',marketsController);
-router.post('/market/userBetInfo',marketsController);
-router.post('/market/totalBetsInfo',marketsController);
-router.post('/market/betInfo',marketsController);
+router.post('/market/bet',betController);
+router.post('/market/claim',claimController);
+router.post('/market/userBetInfo',userBetInfoController);
+router.post('/market/totalBetsInfo',totalBetsInfoController);
+router.post('/market/marketInfo',marketInfoController);
 
 module.exports = router;
