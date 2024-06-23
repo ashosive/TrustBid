@@ -25,7 +25,7 @@ contract PredictionMarketFactory is Ownable {
     event PredictionMarketCreated(
         address indexed marketAddress,
         uint8 numberOfOptions,
-        bytes32 eventHash,
+        bytes eventHash,
         uint256 startTime,
         uint256 expirationTime,
         address indexed owner
@@ -50,7 +50,7 @@ contract PredictionMarketFactory is Ownable {
      */
     function createPredictionMarket(
         uint8 numberOfOptions,
-        bytes32 eventHash,
+        bytes memory eventHash,
         uint256 startTime,
         uint256 expirationTime
     ) public onlyOwner returns (address) {

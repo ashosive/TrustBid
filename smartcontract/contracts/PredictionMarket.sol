@@ -20,7 +20,7 @@ contract PredictionMarket is Ownable {
     uint8 public winningOption;                 // Winning option index (0-indexed)
     uint256 public liquidityPool;               // Total amount of tokens in the liquidity pool
     uint8 public numberOfOptions;               // Number of options available for betting
-    bytes32 public eventHash;                   // Hash of the event description or identifier
+    bytes public eventHash;                   // Hash of the event description or identifier
     uint256 public startTime;                   // Start time of the betting period (Unix timestamp)
     uint256 public expirationTime;              // Expiration time of the betting period (Unix timestamp)
 
@@ -51,7 +51,7 @@ contract PredictionMarket is Ownable {
     event MarketCreated(
         address indexed marketAddress,
         uint8 numberOfOptions,
-        bytes32 eventHash,
+        bytes eventHash,
         uint256 startTime,
         uint256 expirationTime
     );
@@ -67,7 +67,7 @@ contract PredictionMarket is Ownable {
     constructor(
         address _tokenAddress,
         uint8 _numberOfOptions,
-        bytes32 _eventHash,
+        bytes memory _eventHash,
         uint256 _startTime,
         uint256 _expirationTime,
         address _initOwner

@@ -1,9 +1,15 @@
-const { marketsService } = require("../services/subgraph.service");
+const { eventHashService } = require("../services/event.service");
 const { handleError, handleResponse } = require("../utils/responseHelper");
 
-const marketsController = async (req,res) => {
+const eventDecodeController = async (req,res) => {
     try {
-        const result = await marketsService();
+        const { eventHash } = req.body;
+
+        if(!eventHash) {
+            throw new TypeError("require body value eventhash");
+        }
+
+        const result = await eventHashService(eventHash);
 
         console.log("result txn ",result)
 
@@ -12,7 +18,6 @@ const marketsController = async (req,res) => {
         }
 
         handleResponse({res, statusCode: 201, result: result.message})
-
     } catch(err) {
         if (err instanceof TypeError) {
             handleError({ res, statusCode: 400, err: err.message });
@@ -22,4 +27,4 @@ const marketsController = async (req,res) => {
     }
 }
 
-module.exports = marketsController
+module.exports = { eventDecodeController };

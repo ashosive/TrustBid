@@ -84,6 +84,49 @@ const getUnsignedTxn = async (contractAddress, contractAbi, functionName, params
     }
 }
 
+/**
+ * @function getUnsignedNoParamsTxn
+ * @description Asynchronously generates an unsigned Ethereum transaction for a specific no params function of a smart contract.
+ * @param {string} contractAddress - The Ethereum address of the smart contract.
+ * @param {object} contractAbi - The ABI (Application Binary Interface) of the smart contract.
+ * @param {string} functionName - The name of the function for which the transaction is being generated.
+ * @param {string} from - The Ethereum address initiating the transaction.
+ * @returns {object} - An object containing the unsigned transaction data or an error message.
+ */
+const getUnsignedNoParamsTxn = async (contractAddress, contractAbi, functionName, from) => {
+    try {
+        // Get Ethereum provider instance
+        const provider = await getProvider();
+
+        // Get contract instance
+        const contractInstance = await getContractInstance(contractAddress, contractAbi, provider);
+
+        // Populate unsigned transaction data
+        const unsignedTxn = await contractInstance.getFunction(functionName).populateTransaction();
+        logger.debug("unsigned txn "+unsignedTxn);
+        console.log("from",from)
+        
+        // Create a VoidSigner instance with sender's Ethereum address
+        const voidSigner = new ethers.VoidSigner(from, provider);
+
+        // Populate full transaction data
+        const fullTxn = await voidSigner.populateTransaction(unsignedTxn);
+        logger.debug("full unsigned txn "+fullTxn);
+        console.log("full unsigned txn ",fullTxn);
+
+        let txnInfoStringify = JSON.stringify(fullTxn, (key, value) =>
+        typeof value === "bigint" ? value.toString() : value
+        );
+        console.log("to string value ",txnInfoStringify)
+
+        // Return unsigned transaction data
+        return { msg: txnInfoStringify, error: false };
+    } catch(err) {
+        // Return error message if transaction generation fails
+        return { msg: err.message, error: true };
+    }
+}
+
 const getReadFunction = async (contractAddress, contractAbi, functionName, paramsArray) => {
     try {
         // Get Ethereum provider instance
@@ -124,4 +167,4 @@ const getReadFunctionNoParams = async (contractAddress, contractAbi, functionNam
     }
 }
 
-module.exports = { getContractInstance, getUnsignedTxn, getReadFunction, getReadFunctionNoParams };
+module.exports = { getContractInstance, getUnsignedTxn, getReadFunction, getReadFunctionNoParams, getUnsignedNoParamsTxn };

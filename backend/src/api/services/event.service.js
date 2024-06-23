@@ -1,9 +1,9 @@
-const { queryGraph } = require("../utils/subgraphHelper")
+const { decode } = require("../utils/eventHashHelper")
 
-const marketsService = async () => {
+const eventHashService = async (eventHash) => {
     try {
-        const result = await queryGraph();
-    
+        const result = decode(eventHash);
+
         if(result.error){
             return {
                 message: result.msg,
@@ -18,10 +18,10 @@ const marketsService = async () => {
 
     } catch(err){
         return {
-            message: err.msg,
+            message: err.message,
             error: true
         }
     }
 }
 
-module.exports = { marketsService }
+module.exports = { eventHashService };
