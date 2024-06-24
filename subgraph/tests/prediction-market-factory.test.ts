@@ -5,7 +5,7 @@ import {
   clearStore,
   beforeAll,
   afterAll
-} from "matchstick-as/assembly/index"
+} from "matchstick-as"
 import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts"
 import { OwnershipTransferred } from "../generated/schema"
 import { OwnershipTransferred as OwnershipTransferredEvent } from "../generated/PredictionMarketFactory/PredictionMarketFactory"

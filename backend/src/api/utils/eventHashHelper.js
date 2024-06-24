@@ -14,8 +14,8 @@ function encode(title, options) {
     );
 
     console.log("ecoded", encodedData)
-    const hash = ethers.keccak256(encodedData);
-    console.log("hash ", hash);
+    // const hash = ethers.keccak256(encodedData);
+    // console.log("hash ", hash);
     return encodedData;
 }
 
@@ -35,10 +35,10 @@ function decode(hash) {
 
 }
 
-// const title = "when is event?";
-// const options = ["A", "B", "C"];
+// const title = "Will it rain tomorrow?";
+// const options = ["Yes", "No"];
 
 // const decodedData = encode(title, options);
 // decode(decodedData)
 
-module.exports = { decode };
+module.exports = { decode, encode };

@@ -1,0 +1,41 @@
+.market-card {
+    width: 300px;
+    margin: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    background-color: #fff;
+  }
+  
+  .market-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .market-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  
+  .market-details {
+    margin-top: 10px;
+  }
+  
+  .market-details > * {
+    display: block;
+    margin-bottom: 8px;
+  }
+  
+  .market-card .MuiCardContent-root {
+    padding: 16px;
+  }
+  
+  .market-card .MuiCardActionArea-root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+  }
+  

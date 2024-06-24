@@ -55,10 +55,7 @@ export function createPredictionMarketCreatedEvent(
     )
   )
   predictionMarketCreatedEvent.parameters.push(
-    new ethereum.EventParam(
-      "eventHash",
-      ethereum.Value.fromFixedBytes(eventHash)
-    )
+    new ethereum.EventParam("eventHash", ethereum.Value.fromBytes(eventHash))
   )
   predictionMarketCreatedEvent.parameters.push(
     new ethereum.EventParam(
