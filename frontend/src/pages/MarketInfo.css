@@ -1,0 +1,152 @@
+.market-info {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+  
+  .market-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .market-detail {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+  
+  .market-detail strong {
+    font-weight: 600;
+  }
+  
+  .market-select {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .market-select label {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .market-select select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .market-bid {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .market-bid input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .market-bid button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-left: 10px; /* Add margin to buttons for spacing */
+  }
+  
+  .market-bid button:hover {
+    background-color: #0056b3;
+  }
+
+/*** User Info ***/
+
+/* Container for the user info */
+.user-info {
+    padding: 15px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    max-width: 300px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Main header */
+.user-info > div:first-child {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+/* Sub container for the bid information */
+.user-bid-info {
+    padding: 10px;
+    background-color: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.2s ease, border 0.2s ease;
+}
+
+/* Loading message */
+.user-bid-info .loading {
+    text-align: center;
+    color: #888;
+    font-style: italic;
+}
+
+/* Not bid message */
+.user-bid-info .not-bid {
+    text-align: center;
+    color: #d9534f;
+    font-weight: bold;
+}
+
+/* Option and Amount labels */
+.user-bid-info div {
+    margin-bottom: 5px;
+}
+
+.user-bid-info div:last-child {
+    margin-bottom: 0;
+}
+
+/* Option and Amount values */
+.user-bid-info .option,
+.user-bid-info .amount {
+    font-weight: bold;
+    color: #555;
+}
+
+.user-bid-info .amount::after {
+    content: ' USDT';
+}
+
+/* Hover effects for the container */
+.user-info:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Hover effects for the bid info */
+.user-bid-info:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
+}

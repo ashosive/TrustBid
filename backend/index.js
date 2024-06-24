@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require('path');
+const cors = require("cors");
 
 // routes
 const invalidRoutes = require("./src/api/routes/invalid.route");
@@ -14,6 +15,8 @@ const eventRoutes = require("./src/api/routes/event.route");
 
 // req input phraser
 app.use(express.json());
+
+app.use(cors());
 
 
 app.get('/', (req, res) => {

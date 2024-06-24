@@ -1,14 +1,59 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import Market from './pages/Market';
+import MarketPage from './pages/MarketPage';
+import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
+import MarketInfo from './pages/MarketInfo';
+import Navbar from './components/Navbar';
+
+interface Market {
+  eventHash: string;
+  expirationTime: string;
+  id: string;
+  marketAddress: string;
+  numberOfOptions: number;
+  owner: string;
+  startTime: string;
+  blockTimestamp: string;
+  title: string; // Added title field
+  options: string[]; // Added options field, assuming it's an array of strings
+}
 
 function App() {
+  const [connectedAccount, setConnectedAccount] = useState("");
+  const [accountBalance, setAccountBalance] = useState(0);
+  const [markets, setMarkets] = useState<Market[]>([]);
+
   return (
-    <div className="App">
-      <h1>Prediction Market</h1>
-      <Market/>
+    <div>
+      <Navbar connectedAccount={connectedAccount} setConnectedAccount={setConnectedAccount} setAccountBalance={setAccountBalance} accountBalance={accountBalance} />
+      <Router>
+        <Routes>
+          <Route path="/" element={<MarketPage markets={markets} setMarkets={setMarkets}/>} />
+          <Route
+            path="/market/:i/:id"
+            element={<MarketInfoComponentWrapper markets={markets} account={connectedAccount} />}
+          />
+        </Routes>
+      </Router>
     </div>
   );
 }
+
+// Component wrapper to pass props to MarketInfo component
+const MarketInfoComponentWrapper: React.FC<{ markets: Market[], account: string }> = ({ markets, account }) => {
+  // Extracting route parameters
+  const { i, id } = useParams();
+
+  // Find the market based on 'i' index, handle case where 'i' is undefined
+  const market = i !== undefined ? markets[parseInt(i)] : undefined;
+
+  return market ? <MarketInfo blockTimestamp={market.blockTimestamp} eventHash={market.eventHash} id={market.id} expirationTime={market.expirationTime} marketAddress={market.marketAddress}
+  numberOfOptions={market.numberOfOptions}
+  owner={market.owner}
+  title={market.title}
+  options={market.options}
+  from={account}
+  startTime={market.startTime}/> : null
+};
 
 export default App;

@@ -1,0 +1,26 @@
+.card {
+    min-width: 275px;
+    max-width: 500px;
+    margin: 20px auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-content {
+    padding: 16px;
+  }
+  
+  .card-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card-options {
+    margin-top: 12px;
+  }
+  
+  .card-action {
+    justify-content: center;
+    padding: 8px;
+  }
+  

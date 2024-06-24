@@ -1,0 +1,60 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #2c3e50;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .navbar-connect {
+    display: flex;
+    align-items: center;
+  }
+  
+  .connect-btn,
+  .disconnect-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .connect-btn:hover,
+  .disconnect-btn:hover {
+    background-color: #2980b9;
+  }
+  
+  .disconnect-btn {
+    background-color: #e74c3c;
+  }
+  
+  .disconnect-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  .navbar-userinfo {
+    display: flex;
+    align-items: center;
+  }
+  
+  .address {
+    margin-right: 10px;
+    font-family: monospace;
+  }
+  
+  .balance {
+    font-weight: bold;
+    margin-left: 5px;
+  }
+  
