@@ -84,7 +84,7 @@ const totalBetsInfoService = async (market) => {
         console.log("no of options ",options);
 
         const totalOptions = {};
-        for(let i = 1; i <= options.msg; i++){
+        for(let i = 0; i < options.msg; i++){
             const params = [i];
             const result = await getReadFunction(market,marketAbi,"totalBets",params);
             console.log("txn ",result);

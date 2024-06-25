@@ -38,6 +38,7 @@ const MarketInfo = ({
 
     const handleOptionSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value;
+        console.log("selected option ", selectedValue)
         setSelectedOption(selectedValue);
     };
 
