@@ -171,4 +171,4 @@ const getReadFunctionNoParams = async (contractAddress, contractAbi, functionNam
     }
 }
 
-module.exports = { getContractInstance, getUnsignedTxn, getReadFunction, getReadFunctionNoParams, getUnsignedNoParamsTxn };
+module.exports = { getProvider, getContractInstance, getUnsignedTxn, getReadFunction, getReadFunctionNoParams, getUnsignedNoParamsTxn };

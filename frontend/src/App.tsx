@@ -4,6 +4,7 @@ import MarketPage from './pages/MarketPage';
 import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-dom';
 import MarketInfo from './pages/MarketInfo';
 import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
 
 interface Market {
   eventHash: string;
@@ -25,14 +26,15 @@ function App() {
 
   return (
     <div>
-      <Navbar connectedAccount={connectedAccount} setConnectedAccount={setConnectedAccount} setAccountBalance={setAccountBalance} accountBalance={accountBalance} />
       <Router>
+      <Navbar connectedAccount={connectedAccount} setConnectedAccount={setConnectedAccount} setAccountBalance={setAccountBalance} accountBalance={accountBalance} />
         <Routes>
           <Route path="/" element={<MarketPage markets={markets} setMarkets={setMarkets}/>} />
           <Route
             path="/market/:i/:id"
             element={<MarketInfoComponentWrapper markets={markets} account={connectedAccount} />}
           />
+          <Route path='/dashboard' element={<Dashboard user={connectedAccount}/>} />
         </Routes>
       </Router>
     </div>

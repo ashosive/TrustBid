@@ -4,6 +4,7 @@ import axios from 'axios';
 import getReason from '../utils/getReason';
 import waitForTransactionConfirmation from '../utils/waitForTxn';
 import sendTxn from '../utils/sendTxn';
+import EventActivityTable from '../components/EventActivityTable';
 
 interface Market {
     eventHash: string;
@@ -34,11 +35,12 @@ const MarketInfo = ({
 }: Market) => {
     const [selectedOption, setSelectedOption] = useState<string | null>('0');
     const [amount, setAmount] = useState<number>(0);
-    const [userBidInfo, setUserBidInfo] = useState<number[]>([]);
+    const [userBidInfo, setUserBidInfo] = useState<number[]>([])
     const [totalBidInfo, setTotalBidInfo] = useState<{ [key: number]: number }>({});
 
     const handleOptionSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value;
+        console.log("selected option ", selectedValue)
         setSelectedOption(selectedValue);
     };
 
@@ -55,7 +57,7 @@ const MarketInfo = ({
             }
             const result = await axios.post('http://localhost:3000/market/bet', {
                 market: marketAddress,
-                amount: String(amount),
+                amount: String(amount * 10**18),
                 option: selectedOption,
                 from: from
             });
@@ -143,18 +145,9 @@ const MarketInfo = ({
     return (
         <div className="market-info">
             <h2 className="market-title">{title}</h2>
-            {/* <div className="market-detail">
-        <strong>Block Timestamp:</strong> {blockTimestamp}
-      </div> */}
-            {/* <div className="market-detail">
-        <strong>Event Hash:</strong> {eventHash}
-      </div> */}
             <div className="market-detail">
                 <strong>Expiration Time:</strong> {expirationTime}
             </div>
-            {/* <div className="market-detail">
-        <strong>ID:</strong> {id}
-      </div> */}
             <div className="market-detail">
                 <strong>Market Address:</strong> {marketAddress}
             </div>
@@ -195,7 +188,7 @@ const MarketInfo = ({
                         ) : (
                             <div>
                                 <div>Option: <span className="option">{options[userBidInfo[1]]}</span></div>
-                                <div>Amount: <span className="amount">{userBidInfo[0]}</span></div>
+                                <div>Amount: <span className="amount">{userBidInfo[0] / 10**18}</span></div>
                             </div>
                         )
                     ) : (
@@ -210,14 +203,14 @@ const MarketInfo = ({
                     ) : (
                         <div className="bid-info">
                             {/*<div>Option: <span className="option">{options[bidOption]}</span></div>*/}
-                            <div>Amount: <span className="amount">{bidAmount}</span></div>
+                            <div>Total Bet Amount: <span className="amount">{bidAmount}</span></div>
                         </div>
                     )
                 ) : (
                     <div className="loading">Loading....</div>
                 )}
             </div>
-
+            <EventActivityTable market={marketAddress}/>
         </div>
     );
 };
