@@ -34,7 +34,8 @@ const MarketInfo = ({
 }: Market) => {
     const [selectedOption, setSelectedOption] = useState<string | null>('0');
     const [amount, setAmount] = useState<number>(0);
-    const [userBidInfo, setUserBidInfo] = useState<number[]>([])
+    const [userBidInfo, setUserBidInfo] = useState<number[]>([]);
+    const [totalBidInfo, setTotalBidInfo] = useState<{ [key: number]: number }>({});
 
     const handleOptionSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value;
@@ -76,7 +77,7 @@ const MarketInfo = ({
                 return alert("connect wallet")
             }
 
-            // get txn 
+            // get txn
             const result = await axios.post('http://localhost:3000/market/claim', {
                 market: marketAddress,
                 from: from
@@ -103,6 +104,20 @@ const MarketInfo = ({
             setAmount(0); // Or handle invalid input accordingly
         }
     };
+    const totalBetsInfo = async () => {
+        try {
+            const response = await axios.post('http://localhost:3000/market/totalBetsInfo', {
+                market: marketAddress,
+                user: from
+            });
+            console.log("Market Total Bet ", response.data.result);
+            setTotalBidInfo(response.data.result);
+            console.log("State Updated: ", response.data.result); // Add this line
+        } catch (err) {
+            console.log("Error fetching total bet info", err);
+        }
+    };
+
 
     useEffect(() => {
         const getBidInfo = async () => {
@@ -119,7 +134,11 @@ const MarketInfo = ({
             }
         }
         getBidInfo();
+        totalBetsInfo().then(r => {});
     }, []);
+
+    const bidAmount = totalBidInfo[0] || 0;
+    const bidOption = totalBidInfo[1] || 0;
 
     return (
         <div className="market-info">
@@ -184,6 +203,21 @@ const MarketInfo = ({
                     )}
                 </div>
             </div>
+            <div className="bid-info-container">
+                {Object.keys(totalBidInfo).length > 0 ? (
+                    bidAmount === 0 && bidOption === 0 ? (
+                        <div className="not-bid">Not Bid Yet!</div>
+                    ) : (
+                        <div className="bid-info">
+                            {/*<div>Option: <span className="option">{options[bidOption]}</span></div>*/}
+                            <div>Amount: <span className="amount">{bidAmount}</span></div>
+                        </div>
+                    )
+                ) : (
+                    <div className="loading">Loading....</div>
+                )}
+            </div>
+
         </div>
     );
 };
