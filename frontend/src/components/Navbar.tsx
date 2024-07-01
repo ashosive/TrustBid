@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import './Navbar.css';
 import Web3 from 'web3';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 interface NavbarProps {
     connectedAccount: string;
@@ -65,6 +66,10 @@ const Navbar = ({ connectedAccount, accountBalance, setAccountBalance, setConnec
                         Connect Wallet
                     </button>
                 )}
+                {/* Dashboard button */}
+                <Link to="/dashboard" className="dashboard-link">
+                    Dashboard
+                </Link>
             </div>
         </div>
     );
