@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Dashboard.css'; // Import your custom CSS file
+import PieChart from '../components/PieChart';
 
 interface EventData {
   event: string;
@@ -58,6 +59,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user}) => {
             <h2>Total Amount Invested</h2>
             <p>{formatTokenAmount(dashboardData.totalAmountInvested.toString())} USDT</p>
           </div>
+          <PieChart details={dashboardData.details}/>
           <div className="events-list">
             <h2>Recent Events</h2>
             <div className="event-items">
