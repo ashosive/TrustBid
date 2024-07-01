@@ -4,6 +4,7 @@ import axios from 'axios';
 import getReason from '../utils/getReason';
 import waitForTransactionConfirmation from '../utils/waitForTxn';
 import sendTxn from '../utils/sendTxn';
+import EventActivityTable from '../components/EventActivityTable';
 
 interface Market {
     eventHash: string;
@@ -55,7 +56,7 @@ const MarketInfo = ({
             }
             const result = await axios.post('http://localhost:3000/market/bet', {
                 market: marketAddress,
-                amount: String(amount),
+                amount: String(amount * 10**18),
                 option: selectedOption,
                 from: from
             });
@@ -125,18 +126,9 @@ const MarketInfo = ({
     return (
         <div className="market-info">
             <h2 className="market-title">{title}</h2>
-            {/* <div className="market-detail">
-        <strong>Block Timestamp:</strong> {blockTimestamp}
-      </div> */}
-            {/* <div className="market-detail">
-        <strong>Event Hash:</strong> {eventHash}
-      </div> */}
             <div className="market-detail">
                 <strong>Expiration Time:</strong> {expirationTime}
             </div>
-            {/* <div className="market-detail">
-        <strong>ID:</strong> {id}
-      </div> */}
             <div className="market-detail">
                 <strong>Market Address:</strong> {marketAddress}
             </div>
@@ -177,7 +169,7 @@ const MarketInfo = ({
                         ) : (
                             <div>
                                 <div>Option: <span className="option">{options[userBidInfo[1]]}</span></div>
-                                <div>Amount: <span className="amount">{userBidInfo[0]}</span></div>
+                                <div>Amount: <span className="amount">{userBidInfo[0] / 10**18}</span></div>
                             </div>
                         )
                     ) : (
@@ -185,6 +177,7 @@ const MarketInfo = ({
                     )}
                 </div>
             </div>
+            <EventActivityTable market={marketAddress}/>
         </div>
     );
 };

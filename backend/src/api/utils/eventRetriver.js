@@ -38,7 +38,7 @@ async function fetchLatestInteractions(contractAddress, contractAbi) {
             };
     
             // Decode logs
-            const decodedEvents = events.map(event => {
+            const decodedEvents = events.map(async event => {
                 const eventInterface = contract.interface;
                 const logDescription = eventInterface.parseLog(event);
                 const parameterNames = eventParameterNames[logDescription.name] || [];
@@ -50,16 +50,23 @@ async function fetchLatestInteractions(contractAddress, contractAbi) {
                     acc[paramName] = typeof value === 'bigint' ? value.toString() : value;
                     return acc;
                 }, {});
+
+                // Get timestamp asynchronously
+                const timestamp = await getEventTimestamp(event.blockNumber, contract);
     
                 return {
                     eventName: logDescription.name,
                     values,
                     blockNumber: BigInt(event.blockNumber).toString(),
-                    transactionHash: event.transactionHash
+                    transactionHash: event.transactionHash,
+                    timestamp
                 };
-            });
 
-            return { msg: decodedEvents, error: false };
+            });
+            // Wait for all promises in decodedEvents to resolve
+            const decodedEventsWithTimestamps = await Promise.all(decodedEvents);
+            
+            return { msg: decodedEventsWithTimestamps, error: false };
 
     } catch (error) {
         console.error('Error fetching interactions:', error);
@@ -67,10 +74,30 @@ async function fetchLatestInteractions(contractAddress, contractAbi) {
     }
 }
 
+// Assume you have an async function to get provider and contract
+const getEventTimestamp = async (blockNumber, contract) => {
+    try {
+        const provider = await getProvider(); // Assuming getProvider() returns a Promise
+        const blockHex = '0x' + BigInt(blockNumber).toString(16);
+        const block = await provider.getBlock(blockHex);
+
+        if (block) {
+            return block.timestamp // Convert timestamp to human-readable format if needed
+        } else {
+            throw new Error(`Block not found for block number: ${blockNumber}`);
+        }
+    } catch (error) {
+        console.error("Error fetching block information:", error);
+        // Handle error as needed, e.g., show error message, log, etc.
+        throw error;
+    }
+};
+
 const getUserInteractionHistory = async (user,markets) => {
     try {
         // check all the data of user on each markets 
         // also store the marker status
+        let totalAmountInvested = 0;
 
         const userHistory = await Promise.all(
             markets.map(async (market) => {
@@ -78,24 +105,48 @@ const getUserInteractionHistory = async (user,markets) => {
                 // console.log("data ", data, data.msg[0], data.msg[0]?.market);
         
                 if (data.msg.length > 0) {
-                    console.log(data.msg)
-                    return {
-                        event: data.msg[0].eventName,
-                        market: data.msg[0]?.market,
-                        isResolved: data.msg[0]?.isResolved,
-                        values: data.msg[0]?.values,
-                        blockNumber: data.msg[0]?.blockNumber,
-                        transactionHash: data.msg[0]?.transactionHash
-                    };
+                    const amount = data.msg[0].values?.amount ? parseFloat(data.msg[0].values.amount) : 0;
+                    try {
+                        const provider = await getProvider(); // Assuming getProvider() returns a Promise
+                        const blockHex = '0x' + BigInt(data.msg[0]?.blockNumber).toString(16);
+                        const block = await provider.getBlock(blockHex);
+                
+                        if (block) {
+                            const timestamp = block.timestamp;
+                            console.log("Block details:", block);
+                            console.log("Timestamp:", timestamp);
+                            totalAmountInvested += amount;
+                
+                            return {
+                                event: data.msg[0].eventName,
+                                market: data.msg[0]?.market,
+                                isResolved: data.msg[0]?.isResolved,
+                                values: data.msg[0]?.values,
+                                blockNumber: data.msg[0]?.blockNumber,
+                                transactionHash: data.msg[0]?.transactionHash,
+                                timestamp: timestamp // Convert timestamp to human-readable format if needed
+                            };
+                        } else {
+                            throw new Error(`Block not found for block number: ${data.msg[0]?.blockNumber}`);
+                        }
+                    } catch (error) {
+                        console.error("Error fetching block information:", error);
+                        // Handle error as needed, e.g., show error message, log, etc.
+                        throw error;
+                    }
                 }
             })
         );
 
         // Filter out undefined values
         const filteredHistory = userHistory.filter(item => item !== undefined);
+        const result = {
+            totalAmountInvested : totalAmountInvested,
+            details : filteredHistory
+        }
 
 
-        return { msg: filteredHistory, error: false }
+        return { msg: result, error: false }
         
     } catch(err) {
         console.error('Error fetching user interactions:', err);
