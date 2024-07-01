@@ -6,48 +6,48 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
   }
-  
+
   .market-title {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
     text-align: center;
   }
-  
+
   .market-detail {
     margin-bottom: 10px;
     font-size: 16px;
   }
-  
+
   .market-detail strong {
     font-weight: 600;
   }
-  
+
   .market-select {
     margin: 20px 0;
     display: flex;
     flex-direction: column;
   }
-  
+
   .market-select label {
     margin-bottom: 10px;
     font-size: 16px;
     font-weight: 600;
   }
-  
+
   .market-select select {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
   }
-  
+
   .market-bid {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
   }
-  
+
   .market-bid input {
     flex: 1;
     padding: 10px;
@@ -55,7 +55,7 @@
     border-radius: 5px;
     border: 1px solid #ccc;
   }
-  
+
   .market-bid button {
     padding: 10px 20px;
     border: none;
@@ -66,7 +66,7 @@
     transition: background-color 0.3s;
     margin-left: 10px; /* Add margin to buttons for spacing */
   }
-  
+
   .market-bid button:hover {
     background-color: #0056b3;
   }
@@ -150,3 +150,47 @@
     background-color: #f0f0f0;
     border-color: #ccc;
 }
+
+
+
+.bid-info-container {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    max-width: 400px;
+}
+
+.not-bid {
+    color: #ff6347;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bid-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.option, .amount {
+    font-weight: bold;
+    color: #4caf50;
+}
+
+.option::before {
+    content: '🏷️ ';
+}
+
+.amount::before {
+    content: '💰 ';
+}
+
+.loading {
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+}
+
