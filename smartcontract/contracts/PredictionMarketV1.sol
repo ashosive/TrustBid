@@ -102,7 +102,6 @@ contract PredictionMarketV1 is Ownable {
     function placeBet(uint256 amount, uint8 option) public {
         require(!marketResolved, "Market already resolved");
         require(option < numberOfOptions, "Invalid option");
-        require(bets[msg.sender].amount == 0, "You have already placed a bet");
         require(block.timestamp <= endTime, "Betting period is over");
 
         // Allow user to modify their existing bet if they have already placed one

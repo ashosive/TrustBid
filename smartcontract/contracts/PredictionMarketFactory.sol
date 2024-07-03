@@ -18,7 +18,6 @@ contract PredictionMarketFactory is Ownable {
      * @param marketAddress Address of the newly created prediction market.
      * @param numberOfOptions Number of options available for betting in the market.
      * @param eventHash Hash of the event description or identifier for the market.
-     * @param startTime Start time of the betting period for the market.
      * @param expirationTime Expiration time of the betting period for the market.
      * @param owner Address of the owner who created the prediction market.
      */
@@ -26,7 +25,6 @@ contract PredictionMarketFactory is Ownable {
         address indexed marketAddress,
         uint8 numberOfOptions,
         bytes eventHash,
-        uint256 startTime,
         uint256 expirationTime,
         address indexed owner
     );
@@ -53,7 +51,7 @@ contract PredictionMarketFactory is Ownable {
         uint256 expirationTime
     ) public onlyOwner returns (address) {
         PredictionMarketV1 newMarket = new PredictionMarketV1(tokenAddress, numberOfOptions, eventHash, expirationTime,msg.sender);
-        emit PredictionMarketCreated(address(newMarket), numberOfOptions, eventHash, block.timestamp, expirationTime, msg.sender);
+        emit PredictionMarketCreated(address(newMarket), numberOfOptions, eventHash, expirationTime, msg.sender);
         return address(newMarket);
     }
 }
