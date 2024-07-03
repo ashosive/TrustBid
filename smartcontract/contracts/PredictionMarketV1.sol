@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  * @title Prediction Market Contract
  * @dev A smart contract for prediction markets where users can bet on outcomes of events.
  */
-contract PredictionMarket is Ownable {
+contract PredictionMarketV1 is Ownable {
     struct Bet {
         uint256 amount; // Amount of tokens bet by the user
         uint8 option;   // Option chosen by the user (0-indexed)
@@ -22,7 +22,6 @@ contract PredictionMarket is Ownable {
     uint256 public liquidityPool;               // Total amount of tokens in the liquidity pool
     uint8 public numberOfOptions;               // Number of options available for betting
     bytes public eventHash;                   // Hash of the event description or identifier
-    uint256 public startTime;                   // Start time of the betting period (Unix timestamp)
     uint256 public endTime;              // End time of the betting period (Unix timestamp)
 
     IERC20 public token; // Token used for betting
@@ -46,14 +45,12 @@ contract PredictionMarket is Ownable {
      * @param marketAddress Address of the newly created prediction market.
      * @param numberOfOptions Number of options available for betting in the market.
      * @param eventHash Hash of the event description or identifier.
-     * @param startTime Start time of the betting period (Unix timestamp).
      * @param expirationTime Expiration time of the betting period (Unix timestamp).
      */
     event MarketCreated(
         address indexed marketAddress,
         uint8 numberOfOptions,
         bytes eventHash,
-        uint256 startTime,
         uint256 expirationTime
     );
 
@@ -65,20 +62,26 @@ contract PredictionMarket is Ownable {
      */
     event Claimed(address indexed user, uint256 amount, uint8 option);
 
+    /**
+     * @dev Event emiited when a user update ther bid
+     * @param user Address of the user claiming winnings.
+     * @param newAmount New amount of tokens claimed.
+     * @param newOption New index of the option won (0-indexed).
+     */
+    event BetUpdated(address indexed user, uint256 newAmount, uint8 newOption);
+
 
     /**
      * @dev Constructor to initialize the prediction market.
      * @param _tokenAddress Address of the ERC20 token used for betting.
      * @param _numberOfOptions Number of options available for the market.
      * @param _eventHash Hash of the event description or identifier.
-     * @param _startTime Start time of the betting period (Unix timestamp).
      * @param _endTime Expiration time of the betting period (Unix timestamp).
      */
     constructor(
         address _tokenAddress,
         uint8 _numberOfOptions,
         bytes memory _eventHash,
-        uint256 _startTime,
         uint256 _endTime,
         address _initOwner
     ) Ownable(_initOwner) {
@@ -86,14 +89,13 @@ contract PredictionMarket is Ownable {
         token = IERC20(_tokenAddress);
         numberOfOptions = _numberOfOptions;
         eventHash = _eventHash;
-        startTime = _startTime;
         endTime = _endTime;
 
-        emit MarketCreated(address(this), _numberOfOptions, _eventHash, _startTime, _endTime);
+        emit MarketCreated(address(this), _numberOfOptions, _eventHash, _endTime);
     }
 
     /**
-     * @notice Function for users to place bets on an option.
+     * @notice Function for users to place bets on an option or modify it.
      * @param amount Amount of tokens to bet.
      * @param option Index of the option chosen (0-indexed).
      */
@@ -101,7 +103,24 @@ contract PredictionMarket is Ownable {
         require(!marketResolved, "Market already resolved");
         require(option < numberOfOptions, "Invalid option");
         require(bets[msg.sender].amount == 0, "You have already placed a bet");
-        require(block.timestamp >= startTime && block.timestamp <= endTime, "Betting period is over");
+        require(block.timestamp <= endTime, "Betting period is over");
+
+        // Allow user to modify their existing bet if they have already placed one
+        if (bets[msg.sender].amount > 0) {
+            uint8 currentOption = bets[msg.sender].option;
+            uint256 currentAmount = bets[msg.sender].amount;
+
+            // Refund the previous bet amount to the user
+            token.transfer(msg.sender, currentAmount);
+
+            // Subtract the previous bet amount from totalBets for the currentOption
+            totalBets[currentOption] -= currentAmount;
+
+            // Subtract the previous bet amount from liquidityPool
+            liquidityPool -= currentAmount;
+
+            emit BetUpdated(msg.sender, amount, option);
+        }
 
         token.transferFrom(msg.sender, address(this), amount);
 
@@ -133,6 +152,7 @@ contract PredictionMarket is Ownable {
     function claimWinnings() public {
         require(marketResolved, "Market not resolved");
         require(bets[msg.sender].amount > 0, "No bet placed");
+        require(!bets[msg.sender].claimed,"Already claimed");
 
         Bet memory userBet = bets[msg.sender];
         require(userBet.option == winningOption, "You did not win");

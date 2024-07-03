@@ -108,17 +108,21 @@ const getUnsignedNoParamsTxn = async (contractAddress, contractAbi, functionName
         // Populate unsigned transaction data
         const unsignedTxn = await contractInstance.getFunction(functionName).populateTransaction();
         logger.debug("unsigned txn "+unsignedTxn);
-        console.log("from",from,"unisgned ",unsignedTxn)
+        console.log("from",from,"unisgned ",unsignedTxn);
+
+        unsignedTxn.from = from;
+        unsignedTxn.chainId = '421614'
+
         
-        // Create a VoidSigner instance with sender's Ethereum address
-        const voidSigner = new ethers.VoidSigner(from, provider);
+        // // Create a VoidSigner instance with sender's Ethereum address
+        // const voidSigner = new ethers.VoidSigner(from, provider);
 
-        // Populate full transaction data
-        const fullTxn = await voidSigner.populateTransaction(unsignedTxn);
-        logger.debug("full unsigned txn "+fullTxn);
-        console.log("full unsigned txn ",fullTxn);
+        // // Populate full transaction data
+        // const fullTxn = await voidSigner.populateTransaction(unsignedTxn);
+        // logger.debug("full unsigned txn "+fullTxn);
+        // console.log("full unsigned txn ",fullTxn);
 
-        let txnInfoStringify = JSON.stringify(fullTxn, (key, value) =>
+        let txnInfoStringify = JSON.stringify(unsignedTxn, (key, value) =>
         typeof value === "bigint" ? value.toString() : value
         );
         console.log("to string value ",txnInfoStringify)

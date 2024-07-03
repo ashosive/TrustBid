@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "./PredictionMarket.sol";
+import "./PredictionMarketV1.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -44,18 +44,16 @@ contract PredictionMarketFactory is Ownable {
      * @dev Only callable by the owner of the contract.
      * @param numberOfOptions Number of options available for betting in the new market.
      * @param eventHash Hash of the event description or identifier for the new market.
-     * @param startTime Start time of the betting period for the new market.
      * @param expirationTime Expiration time of the betting period for the new market.
      * @return Address of the newly created PredictionMarket contract.
      */
     function createPredictionMarket(
         uint8 numberOfOptions,
         bytes memory eventHash,
-        uint256 startTime,
         uint256 expirationTime
     ) public onlyOwner returns (address) {
-        PredictionMarket newMarket = new PredictionMarket(tokenAddress, numberOfOptions, eventHash, startTime, expirationTime,msg.sender);
-        emit PredictionMarketCreated(address(newMarket), numberOfOptions, eventHash, startTime, expirationTime, msg.sender);
+        PredictionMarketV1 newMarket = new PredictionMarketV1(tokenAddress, numberOfOptions, eventHash, expirationTime,msg.sender);
+        emit PredictionMarketCreated(address(newMarket), numberOfOptions, eventHash, block.timestamp, expirationTime, msg.sender);
         return address(newMarket);
     }
 }
