@@ -20,6 +20,11 @@ interface Market {
     from: string;
 }
 
+interface TotalOptions {
+    totalBidAmount: number;
+    options: number[];
+}
+
 const MarketInfo = ({
     blockTimestamp,
     eventHash,
@@ -36,7 +41,10 @@ const MarketInfo = ({
     const [selectedOption, setSelectedOption] = useState<string | null>('0');
     const [amount, setAmount] = useState<number>(0);
     const [userBidInfo, setUserBidInfo] = useState<number[]>([])
-    const [totalBidInfo, setTotalBidInfo] = useState<{ [key: number]: number }>({});
+    const [totalBidInfo, setTotalBidInfo] = useState<TotalOptions>({
+        totalBidAmount: 0,
+        options: []
+    });
 
     const handleOptionSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value;
@@ -139,9 +147,6 @@ const MarketInfo = ({
         totalBetsInfo().then(r => {});
     }, []);
 
-    const bidAmount = totalBidInfo[0] || 0;
-    const bidOption = totalBidInfo[1] || 0;
-
     return (
         <div className="market-info">
             <h2 className="market-title">{title}</h2>
@@ -169,7 +174,7 @@ const MarketInfo = ({
                 >
                     {options.map((option, i) => (
                         <option value={i} key={i}>
-                            {option}
+                            {option + " - " + String(totalBidInfo.options[i] + ' USDT')}
                         </option>
                     ))}
                 </select>
@@ -197,22 +202,25 @@ const MarketInfo = ({
                 </div>
             </div>
             <div className="bid-info-container">
-                {Object.keys(totalBidInfo).length > 0 ? (
-                    bidAmount === 0 && bidOption === 0 ? (
-                        <div className="not-bid">Not Bid Yet!</div>
-                    ) : (
-                        <div className="bid-info">
-                            {/*<div>Option: <span className="option">{options[bidOption]}</span></div>*/}
-                            <div>Total Bet Amount: <span className="amount">{bidAmount}</span></div>
-                        </div>
-                    )
-                ) : (
-                    <div className="loading">Loading....</div>
-                )}
+              TotalBid amount here {totalBidInfo.totalBidAmount}
             </div>
             <EventActivityTable market={marketAddress}/>
         </div>
     );
 };
+
+//   {/* {Object.keys(totalBidInfo).length > 0 ? (
+//                     bidAmount === 0 && bidOption === 0 ? (
+//                         <div className="not-bid">Not Bid Yet!</div>
+//                     ) : (
+//                         <div className="bid-info">
+//                             {/*<div>Option: <span className="option">{options[bidOption]}</span></div>*/}
+//                             <div>Total Bet Amount: <span className="amount">{bidAmount / 10**18}</span></div>
+//                         </div>
+//                     )
+//                 ) : (
+//                     <div className="loading">Loading....</div>
+//                 )} */}
+                
 
 export default MarketInfo;

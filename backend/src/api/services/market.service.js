@@ -3,7 +3,8 @@ const { getUnsignedTxn, getUnsignedNoParamsTxn, getReadFunction, getReadFunction
 
 const betService = async (market, amount, option, from) => {
     try {
-        const params = [amount, option];
+        const amountWithDecimals = amount * 1e18;
+        const params = [amountWithDecimals, option];
         const result = await getUnsignedTxn(market,marketAbi,"placeBet",params,from);
         console.log("txn ",result)
 
@@ -83,7 +84,16 @@ const totalBetsInfoService = async (market) => {
         const options = await getReadFunctionNoParams(market,marketAbi,"numberOfOptions");
         console.log("no of options ",options);
 
-        const totalOptions = {};
+        const totalOptions = {
+            totalBidAmount: 0, // This holds the total amount of all bids combined
+            options: []
+        };
+        const result = await getReadFunctionNoParams(market, marketAbi,"liquidityPool");
+        if(result.error){
+            throw new TypeError(result.msg);
+        }
+         totalOptions.totalBidAmount = result.msg / 1e18;
+
         for(let i = 0; i < options.msg; i++){
             const params = [i];
             const result = await getReadFunction(market,marketAbi,"totalBets",params);
@@ -91,7 +101,7 @@ const totalBetsInfoService = async (market) => {
             if(result.error){
                 throw new TypeError("error fetching totalbets!");
             }
-            totalOptions[i] = result.msg;
+            totalOptions.options[i] = result.msg / 1e18;
         }
 
         return {
