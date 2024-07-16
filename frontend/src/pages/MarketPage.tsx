@@ -3,6 +3,7 @@ import "./MarketPage.css"
 import axios from 'axios';
 import MarketCard from '../components/MarketCard';
 import { Link } from 'react-router-dom';
+import Config from "../config";
 
 interface Market {
   eventHash: string;
@@ -27,12 +28,12 @@ const MarketPage = ({markets, setMarkets}: MarketProps) => {
   useEffect(() => {
     const fetchMarkets = async () => {
       try {
-        const result = await axios.get('http://localhost:3000/subgraph/markets');
+        const result = await axios.get(`${Config.apiBaseUrl}/subgraph/markets`);
         console.log("result ", result.data.result);
         const subMarkets = result.data.result;
         await Promise.all(
           subMarkets.map(async (market: Market, i: number) => {
-            const decodeHash = await axios.post('http://localhost:3000/event/decode', {
+            const decodeHash = await axios.post(`${Config.apiBaseUrl}/event/decode`, {
               eventHash: market.eventHash
             });
             console.log("decode values ", decodeHash.data.result);

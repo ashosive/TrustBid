@@ -5,6 +5,7 @@ import getReason from '../utils/getReason';
 import waitForTransactionConfirmation from '../utils/waitForTxn';
 import sendTxn from '../utils/sendTxn';
 import EventActivityTable from '../components/EventActivityTable';
+import Config from "../config";
 
 interface Market {
     eventHash: string;
@@ -63,7 +64,7 @@ const MarketInfo = ({
             if (!selectedOption) {
                 return alert("invalid option")
             }
-            const result = await axios.post('http://localhost:3000/market/bet', {
+            const result = await axios.post(`${Config.apiBaseUrl}/market/bet`, {
                 market: marketAddress,
                 amount: String(amount * 10**18),
                 option: selectedOption,
@@ -88,7 +89,7 @@ const MarketInfo = ({
             }
 
             // get txn
-            const result = await axios.post('http://localhost:3000/market/claim', {
+            const result = await axios.post(`${Config.apiBaseUrl}/market/claim`, {
                 market: marketAddress,
                 from: from
             });
@@ -116,7 +117,7 @@ const MarketInfo = ({
     };
     const totalBetsInfo = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/market/totalBetsInfo', {
+            const response = await axios.post(`${Config.apiBaseUrl}/market/totalBetsInfo`, {
                 market: marketAddress,
                 user: from
             });
@@ -133,7 +134,7 @@ const MarketInfo = ({
         const getBidInfo = async () => {
             try {
                 // check user has bid or not
-                const userBidInfo = await axios.post('http://localhost:3000/market/userBetInfo', {
+                const userBidInfo = await axios.post(`${Config.apiBaseUrl}/market/userBetInfo`, {
                     market: marketAddress,
                     user: from
                 })
@@ -221,6 +222,6 @@ const MarketInfo = ({
 //                 ) : (
 //                     <div className="loading">Loading....</div>
 //                 )} */}
-                
+
 
 export default MarketInfo;

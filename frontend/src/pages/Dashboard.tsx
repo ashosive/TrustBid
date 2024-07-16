@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Dashboard.css'; // Import your custom CSS file
 import PieChart from '../components/PieChart';
+import Config from "../config";
 
 interface EventData {
   event: string;
@@ -20,7 +21,7 @@ interface EventData {
 interface UserDetailsProps {
     user: string;
 }
-  
+
 
 const Dashboard: React.FC<UserDetailsProps> = ({user}) => {
   const [dashboardData, setDashboardData] = useState<{
@@ -31,7 +32,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user}) => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const result = await axios.get(`http://localhost:3000/event/interactions/all?user=${user}`); // Replace with your API endpoint
+        const result = await axios.get(`${Config.apiBaseUrl}/event/interactions/all?user=${user}`); // Replace with your API endpoint
         console.log("result ", result.data.result)
         setDashboardData(result.data.result);
       } catch (error) {
@@ -51,7 +52,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user}) => {
   };
 
   return (
-    <div className="dashboard-container"> 
+    <div className="dashboard-container">
       {user ? dashboardData ? (
         <>
           <h1>My Dashboard</h1>

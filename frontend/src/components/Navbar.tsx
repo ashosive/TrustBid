@@ -3,6 +3,7 @@ import './Navbar.css';
 import Web3 from 'web3';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Config from "../config";
 
 interface NavbarProps {
     connectedAccount: string;
@@ -32,7 +33,7 @@ const Navbar = ({ connectedAccount, accountBalance, setAccountBalance, setConnec
             const connectedAddress = accounts[0];
             setConnectedAccount(connectedAddress);
 
-            const balance = await axios.post('http://localhost:3000/token/balance', {
+            const balance = await axios.post(`${Config.apiBaseUrl}/token/balance`, {
                 account: connectedAddress,
                 token: "0xab4f68A873eC164D9d52467D92469fC313Cf64F6"
             });

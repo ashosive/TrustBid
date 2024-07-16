@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import './EventActivityTable.css'
+import Config from "../config";
 
 // Define types for event data
 interface EventData {
@@ -26,7 +27,7 @@ const EventActivityTable = ({market}: {market: string}) => {
     useEffect(() => {
         const getActivities = async () => {
             try {
-                const result = await axios.get(`http://localhost:3000/event/interactions/latest?market=${market}`);
+                const result = await axios.get(`${Config.apiBaseUrl}/event/interactions/latest?market=${market}`);
                 console.log("result ", result.data.result);
                 setEvents(result.data.result);
 
@@ -50,7 +51,7 @@ const EventActivityTable = ({market}: {market: string}) => {
         <>
             {
                 events.length > 0 ? events.map((event, index) => (
-                    <div key={index} className="event"> 
+                    <div key={index} className="event">
                         <div className="event-row">
                             <p><strong>Event Name:</strong> {event.eventName}</p>
                             {event.eventName === "MarketCreated" && (
