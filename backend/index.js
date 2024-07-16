@@ -10,13 +10,19 @@ const tokenRoutes = require("./src/api/routes/token.route");
 const subgraphRoutes = require("./src/api/routes/subgraph.route");
 const marketRoutes = require("./src/api/routes/market.route");
 const eventRoutes = require("./src/api/routes/event.route");
+const cors = require('cors');
 
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // req input phraser
 app.use(express.json());
 
-app.use(cors());
+const corsOptions = {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept, Authorization',
+};
+app.use(cors(corsOptions));
 
 
 app.get('/', (req, res) => {
