@@ -194,3 +194,32 @@
     font-style: italic;
 }
 
+
+.dot {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.blinking {
+    background-color: green;
+    animation: blink 1s infinite;
+}
+
+.stable {
+    background-color: red;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+

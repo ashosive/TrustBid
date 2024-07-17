@@ -6,6 +6,7 @@ import waitForTransactionConfirmation from '../utils/waitForTxn';
 import sendTxn from '../utils/sendTxn';
 import EventActivityTable from '../components/EventActivityTable';
 import Config from "../config";
+import dayjs from 'dayjs';
 
 interface Market {
     eventHash: string;
@@ -46,6 +47,9 @@ const MarketInfo = ({
         totalBidAmount: 0,
         options: []
     });
+    const [currentDate, setCurrentDate] = useState('');
+    const [status, setStatus] = useState('');
+
 
     const handleOptionSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedValue = event.target.value;
@@ -148,11 +152,39 @@ const MarketInfo = ({
         totalBetsInfo().then(r => {});
     }, []);
 
+    useEffect(() => {
+        const now = dayjs();
+        const formattedDate = now.format('YYYY-MM-DD');
+        setCurrentDate(formattedDate);
+
+        const start = dayjs(startTime);
+        const expiration = dayjs(expirationTime);
+
+        if (now.isBefore(start)) {
+            setStatus('Not Active Yet');
+        } else if (now.isBefore(expiration)) {
+            setStatus('Active');
+        } else {
+            setStatus('Inactive');
+        }
+    }, [startTime, expirationTime]);
+    const getStatusDotClass = () => {
+        if (status === 'Active') {
+            return 'dot blinking';
+        } else {
+            return 'dot stable';
+        }
+    };
+
+
     return (
         <div className="market-info">
             <h2 className="market-title">{title}</h2>
             <div className="market-detail">
                 <strong>Expiration Time:</strong> {expirationTime}
+            </div>
+            <div className="market-detail">
+                <strong>Status: <span className={getStatusDotClass()}></span></strong>
             </div>
             <div className="market-detail">
                 <strong>Market Address:</strong> {marketAddress}
