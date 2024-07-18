@@ -9,7 +9,7 @@ async function main() {
   const oracleAddress = "0xeA65F246C606fc7C62f7B35724E85c788A04B13f";
 
   const PredictionMarketFactory = await ethers.deployContract("PredictionMarketFactoryV3", [tokenAddress,oracleAddress,signer.address]);
-
+  
   await PredictionMarketFactory.waitForDeployment();
 
   console.log(

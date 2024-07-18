@@ -3,7 +3,7 @@ import { ethereum, Address, Bytes, BigInt } from "@graphprotocol/graph-ts"
 import {
   OwnershipTransferred,
   PredictionMarketCreated
-} from "../generated/PredictionMarketFactory/PredictionMarketFactory"
+} from "../generated/PredictionMarketFactoryV3/PredictionMarketFactoryV3"
 
 export function createOwnershipTransferredEvent(
   previousOwner: Address,
@@ -32,7 +32,6 @@ export function createPredictionMarketCreatedEvent(
   marketAddress: Address,
   numberOfOptions: i32,
   eventHash: Bytes,
-  startTime: BigInt,
   expirationTime: BigInt,
   owner: Address
 ): PredictionMarketCreated {
@@ -56,12 +55,6 @@ export function createPredictionMarketCreatedEvent(
   )
   predictionMarketCreatedEvent.parameters.push(
     new ethereum.EventParam("eventHash", ethereum.Value.fromBytes(eventHash))
-  )
-  predictionMarketCreatedEvent.parameters.push(
-    new ethereum.EventParam(
-      "startTime",
-      ethereum.Value.fromUnsignedBigInt(startTime)
-    )
   )
   predictionMarketCreatedEvent.parameters.push(
     new ethereum.EventParam(

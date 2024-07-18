@@ -1,6 +1,6 @@
 const axios = require("axios");
 const uniswapURL = "https://api.studio.thegraph.com/query/43306/gld-token-wallet-app/v0.0.1" ; // https://thegraph.com/explorer/subgraph/uniswap/uniswap-v2
-const predictionMarketURL = "https://api.studio.thegraph.com/query/60995/market/version/latest"
+const predictionMarketURL = "https://api.studio.thegraph.com/query/60995/predictionmarket3/version/latest"
 let minBlockV = 0
 const query = `
 query GetProtocol($minBlock: Int!) {

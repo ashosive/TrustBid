@@ -12,7 +12,6 @@ type PredictionMarketCreated @entity(immutable: true) {
   marketAddress: Bytes! # address
   numberOfOptions: Int! # uint8
   eventHash: Bytes! # bytes
-  startTime: BigInt! # uint256
   expirationTime: BigInt! # uint256
   owner: Bytes! # address
   blockNumber: BigInt!

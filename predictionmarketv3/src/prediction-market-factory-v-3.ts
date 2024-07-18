@@ -1,7 +1,7 @@
 import {
   OwnershipTransferred as OwnershipTransferredEvent,
   PredictionMarketCreated as PredictionMarketCreatedEvent
-} from "../generated/PredictionMarketFactory/PredictionMarketFactory"
+} from "../generated/PredictionMarketFactoryV3/PredictionMarketFactoryV3"
 import {
   OwnershipTransferred,
   PredictionMarketCreated
@@ -32,7 +32,6 @@ export function handlePredictionMarketCreated(
   entity.marketAddress = event.params.marketAddress
   entity.numberOfOptions = event.params.numberOfOptions
   entity.eventHash = event.params.eventHash
-  entity.startTime = event.params.startTime
   entity.expirationTime = event.params.expirationTime
   entity.owner = event.params.owner
 

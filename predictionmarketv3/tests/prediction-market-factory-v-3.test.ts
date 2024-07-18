@@ -5,12 +5,12 @@ import {
   clearStore,
   beforeAll,
   afterAll
-} from "matchstick-as"
+} from "matchstick-as/assembly/index"
 import { Address, Bytes, BigInt } from "@graphprotocol/graph-ts"
 import { OwnershipTransferred } from "../generated/schema"
-import { OwnershipTransferred as OwnershipTransferredEvent } from "../generated/PredictionMarketFactory/PredictionMarketFactory"
-import { handleOwnershipTransferred } from "../src/prediction-market-factory"
-import { createOwnershipTransferredEvent } from "./prediction-market-factory-utils"
+import { OwnershipTransferred as OwnershipTransferredEvent } from "../generated/PredictionMarketFactoryV3/PredictionMarketFactoryV3"
+import { handleOwnershipTransferred } from "../src/prediction-market-factory-v-3"
+import { createOwnershipTransferredEvent } from "./prediction-market-factory-v-3-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0

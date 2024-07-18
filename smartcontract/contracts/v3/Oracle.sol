@@ -10,7 +10,9 @@ interface IPredictionMarket {
  * @dev A smart contract for managing prediction market results.
  * Allows authorized updaters to set results for prediction markets.
  */
+
 contract OracleV3 {
+
     address public owner; // Owner of the contract
     mapping(address => bool) public authorizedUpdaters; // Mapping to track authorized updaters
 

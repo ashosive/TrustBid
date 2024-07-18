@@ -2,6 +2,11 @@
   {
     "inputs": [
       { "internalType": "address", "name": "_tokenAddress", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "_oracleAddress",
+        "type": "address"
+      },
       { "internalType": "address", "name": "_initOwner", "type": "address" }
     ],
     "stateMutability": "nonpayable",
@@ -64,12 +69,6 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "startTime",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
         "name": "expirationTime",
         "type": "uint256"
       },
@@ -87,12 +86,18 @@
     "inputs": [
       { "internalType": "uint8", "name": "numberOfOptions", "type": "uint8" },
       { "internalType": "bytes", "name": "eventHash", "type": "bytes" },
-      { "internalType": "uint256", "name": "startTime", "type": "uint256" },
       { "internalType": "uint256", "name": "expirationTime", "type": "uint256" }
     ],
     "name": "createPredictionMarket",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oracleAddress",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
     "type": "function"
   },
   {
