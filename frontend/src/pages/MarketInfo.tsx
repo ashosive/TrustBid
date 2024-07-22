@@ -165,7 +165,7 @@ const MarketInfo = ({
         } else if (now.isBefore(expiration)) {
             setStatus('Active');
         } else {
-            setStatus('Inactive');
+            setStatus('Expired');
         }
     }, [startTime, expirationTime]);
     const getStatusDotClass = () => {
@@ -184,7 +184,8 @@ const MarketInfo = ({
                 <strong>Expiration Time:</strong> {expirationTime}
             </div>
             <div className="market-detail">
-                <strong>Status: <span className={getStatusDotClass()}></span></strong>
+                <strong>Status: <span className={getStatusDotClass()}><span
+                    className="status">{status}</span></span></strong>
             </div>
             <div className="market-detail">
                 <strong>Market Address:</strong> {marketAddress}

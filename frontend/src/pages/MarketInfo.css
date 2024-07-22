@@ -70,7 +70,9 @@
   .market-bid button:hover {
     background-color: #0056b3;
   }
-
+.status{
+    margin-left: 20px;
+}
 /*** User Info ***/
 
 /* Container for the user info */
