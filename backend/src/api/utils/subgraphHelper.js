@@ -39,14 +39,15 @@ const query2 = `
 const querySchemaAllMarkets = `
 query queryAllMarkets {
   predictionMarketCreateds {
-    eventHash
-    expirationTime
     id
     marketAddress
     numberOfOptions
+    eventHash
+    expirationTime
     owner
-    startTime
+    transactionHash
     blockTimestamp
+    blockNumber
   }
 }
 `
@@ -64,7 +65,6 @@ query queryAllMarketsWithStartTimeFilter($startTimestamp: BigInt!) {
     blockTimestamp
     expirationTime
     owner
-    startTime
   }
 }
 `
@@ -79,9 +79,15 @@ const queryGraph = async () =>{
                 // variables: {minBlock: minBlockV}
             }
             );           
+            if(result.data.errors){
+              return {
+                msg: result.data.errors[0].message,
+                error: true
+              }
+            }
             console.log ("Query result: \n", result.data.data);
             return {
-                msg: result.data.data.predictionMarketCreateds,
+                msg: result.data.data.predictionMarketCreateds ,
                 error: false
             }
     } catch (err){
