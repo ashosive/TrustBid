@@ -15,7 +15,6 @@ interface Market {
     marketAddress: string;
     numberOfOptions: number;
     owner: string;
-    startTime: string;
     blockTimestamp: string;
     title: string;
     options: string[];
@@ -35,7 +34,7 @@ const MarketInfo = ({
     marketAddress,
     numberOfOptions,
     owner,
-    startTime,
+    // startTime,
     title,
     options,
     from
@@ -157,17 +156,15 @@ const MarketInfo = ({
         const formattedDate = now.format('YYYY-MM-DD');
         setCurrentDate(formattedDate);
 
-        const start = dayjs(startTime);
+        // const start = dayjs(startTime);
         const expiration = dayjs(expirationTime);
 
-        if (now.isBefore(start)) {
-            setStatus('Not Active Yet');
-        } else if (now.isBefore(expiration)) {
+       if (now.isBefore(expiration)) {
             setStatus('Active');
         } else {
             setStatus('Expired');
         }
-    }, [startTime, expirationTime]);
+    }, [expirationTime]);
     const getStatusDotClass = () => {
         if (status === 'Active') {
             return 'dot blinking';
@@ -196,9 +193,9 @@ const MarketInfo = ({
             <div className="market-detail">
                 <strong>Owner:</strong> {owner}
             </div>
-            <div className="market-detail">
+            {/* <div className="market-detail">
                 <strong>Start Time:</strong> {startTime}
-            </div>
+            </div> */}
             <div className="market-select">
                 <label htmlFor="options">Choose an option:</label>
                 <select

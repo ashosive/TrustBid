@@ -13,7 +13,7 @@ interface Market {
   marketAddress: string;
   numberOfOptions: number;
   owner: string;
-  startTime: string;
+  // startTime: string;
   blockTimestamp: string;
   title: string; // Added title field
   options: string[]; // Added options field, assuming it's an array of strings
@@ -55,7 +55,7 @@ const MarketInfoComponentWrapper: React.FC<{ markets: Market[], account: string 
   title={market.title}
   options={market.options}
   from={account}
-  startTime={market.startTime}/> : null
+  /> : null
 };
 
 export default App;

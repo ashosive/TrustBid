@@ -10,7 +10,7 @@ interface MarketCardProps {
     marketAddress: string;
     numberOfOptions: number;
     owner: string;
-    startTime: string;
+    // startTime: string;
     blockTimestamp: string;
     title: string;
     options: string[];
@@ -34,9 +34,9 @@ const MarketCard = ({ market }: MarketCardProps) => {
             <Typography variant="body2" color="textSecondary">
               Options: {market.numberOfOptions}
             </Typography>
-            <Typography variant="body2" color="textSecondary">
+            {/* <Typography variant="body2" color="textSecondary">
               Start: {parseDate(market.startTime)}
-            </Typography>
+            </Typography> */}
           </Box>
         </CardContent>
       </CardActionArea>
