@@ -35,8 +35,8 @@ function decode(hash) {
 
 }
 
-// const title = "Will it rain tomorrow?";
-// const options = ["Yes", "No"];
+const title = "Will BTC/USD hit 85k ?";
+const options = ["Yes", "No"];
 
 // const decodedData = encode(title, options);
 // decode(decodedData)
