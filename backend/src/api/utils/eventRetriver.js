@@ -2,15 +2,25 @@ const { ethers } = require("ethers");
 const { getContractInstance, getProvider } = require("./txnHelper");
 const contractAbi = require("../utils/abi/market.json")
 
+/**
+ * @dev Fetches all the events for specific market
+ * @param {*} contractAddress Address of the market
+ * @param {*} contractAbi Abi of the market
+ * @returns Object with msg and error
+ */
 async function fetchLatestInteractions(contractAddress, contractAbi) {
     try {
             const provider = await getProvider();
             const contract = await getContractInstance(contractAddress, contractAbi, provider);
 
-            // Filter
+            // Filters
             const marketFilter = await contract.filters.MarketCreated().getTopicFilter();
             const betPlacedFilter = await contract.filters.BetPlaced().getTopicFilter();
             const marketResolvedFilter = await contract.filters.MarketResolved().getTopicFilter();
+            const claimedFilter = await contract.filters.Claimed().getTopicFilter();
+            const betUpdatedFilter = await contract.filters.BetUpdated().getTopicFilter();
+            const marketCanceledFilter = await contract.filters.MarketCanceled().getTopicFilter();
+            const withdrawnFilter = await contract.filters.Withdrawn().getTopicFilter();
 
             const startBlock = '0x' + BigInt(0).toString(16);
             const endBlock = 'latest'
@@ -25,16 +35,24 @@ async function fetchLatestInteractions(contractAddress, contractAbi) {
                     [
                         marketFilter[0],
                         betPlacedFilter[0],
-                        marketResolvedFilter[0]
+                        marketResolvedFilter[0],
+                        claimedFilter[0],
+                        betUpdatedFilter[0],
+                        marketCanceledFilter[0],
+                        withdrawnFilter[0]
                     ]
                 ]
             }]);
     
             // Event parameter names mapping
             const eventParameterNames = {
-                MarketCreated: ['marketAddress', 'numberOfOptions', 'eventHash', 'startTime', 'expirationTime'],
+                MarketCreated: ['marketAddress', 'minBetAmount', 'numberOfOptions', 'eventHash', 'expirationTime'],
                 BetPlaced: ['user', 'amount', 'option'],
-                MarketResolved: ['winningOption']
+                MarketResolved: ['winningOption'],
+                Claimed: ['user','amount','option'],
+                BetUpdated: ['user', 'newAmount', 'newOption'],
+                MarketCanceled: [],
+                Withdrawn: ['account', 'amount', 'option']
             };
     
             // Decode logs
@@ -53,13 +71,17 @@ async function fetchLatestInteractions(contractAddress, contractAbi) {
 
                 // Get timestamp asynchronously
                 const timestamp = await getEventTimestamp(event.blockNumber, contract);
+
+                if(timestamp.error){
+                    throw new Error(timestamp.msg);
+                }
     
                 return {
                     eventName: logDescription.name,
                     values,
                     blockNumber: BigInt(event.blockNumber).toString(),
                     transactionHash: event.transactionHash,
-                    timestamp
+                    timestamp: timestamp.msg
                 };
 
             });
@@ -74,22 +96,26 @@ async function fetchLatestInteractions(contractAddress, contractAbi) {
     }
 }
 
-// Assume you have an async function to get provider and contract
-const getEventTimestamp = async (blockNumber, contract) => {
+/**
+ * Helper to convert block number to block timestamp
+ * @param {*} blockNumber block number to convert
+ * @returns Object with msg and error
+ */
+const getEventTimestamp = async (blockNumber) => {
     try {
-        const provider = await getProvider(); // Assuming getProvider() returns a Promise
+        const provider = await getProvider();
         const blockHex = '0x' + BigInt(blockNumber).toString(16);
         const block = await provider.getBlock(blockHex);
 
         if (block) {
-            return block.timestamp // Convert timestamp to human-readable format if needed
+            return {msg: block.timestamp, error: false} // Convert timestamp to human-readable format if needed
         } else {
             throw new Error(`Block not found for block number: ${blockNumber}`);
         }
     } catch (error) {
         console.error("Error fetching block information:", error);
         // Handle error as needed, e.g., show error message, log, etc.
-        throw error;
+        return {msg: error.message, error: true};
     }
 };
 
@@ -107,7 +133,7 @@ const getUserInteractionHistory = async (user,markets) => {
                 if (data.msg.length > 0) {
                     const amount = data.msg[0].values?.amount ? parseFloat(data.msg[0].values.amount) : 0;
                     try {
-                        const provider = await getProvider(); // Assuming getProvider() returns a Promise
+                        const provider = await getProvider(); 
                         const blockHex = '0x' + BigInt(data.msg[0]?.blockNumber).toString(16);
                         const block = await provider.getBlock(blockHex);
                 

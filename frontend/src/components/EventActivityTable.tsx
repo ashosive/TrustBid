@@ -27,7 +27,7 @@ const EventActivityTable = ({market}: {market: string}) => {
     useEffect(() => {
         const getActivities = async () => {
             try {
-                const result = await axios.get(`${Config.apiBaseUrl}/event/interactions/latest?market=${market}`);
+                const result = await axios.get(`${Config.apiBaseUrl}/event/interactions/all?market=${market}`);
                 console.log("result ", result.data.result);
                 setEvents(result.data.result);
 

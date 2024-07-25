@@ -8,6 +8,11 @@
             },
             {
                 "internalType": "address",
+                "name": "_oracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
                 "name": "_initOwner",
                 "type": "address"
             }
@@ -73,15 +78,9 @@
             },
             {
                 "indexed": false,
-                "internalType": "bytes32",
+                "internalType": "bytes",
                 "name": "eventHash",
-                "type": "bytes32"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "startTime",
-                "type": "uint256"
+                "type": "bytes"
             },
             {
                 "indexed": false,
@@ -107,14 +106,9 @@
                 "type": "uint8"
             },
             {
-                "internalType": "bytes32",
+                "internalType": "bytes",
                 "name": "eventHash",
-                "type": "bytes32"
-            },
-            {
-                "internalType": "uint256",
-                "name": "startTime",
-                "type": "uint256"
+                "type": "bytes"
             },
             {
                 "internalType": "uint256",
@@ -131,6 +125,19 @@
             }
         ],
         "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "oracleAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {

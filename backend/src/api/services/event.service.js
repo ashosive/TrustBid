@@ -27,7 +27,7 @@ const eventHashService = async (eventHash) => {
     }
 }
 
-const eventLatestInteractionsService = async (market) => {
+const eventAllInteractionsService = async (market) => {
     try {
        
         const result = await fetchLatestInteractions(market, marketAbi);
@@ -52,7 +52,7 @@ const eventLatestInteractionsService = async (market) => {
     }
 }
 
-const eventAllLatestInteractionsService = async (user) => {
+const eventAllUserInteractionsService = async (user) => {
     try {
         // gets all the markets 
         const markets = await queryGraph();
@@ -80,4 +80,4 @@ const eventAllLatestInteractionsService = async (user) => {
     }
 }
 
-module.exports = { eventHashService, eventLatestInteractionsService, eventAllLatestInteractionsService };
+module.exports = { eventHashService, eventAllInteractionsService, eventAllUserInteractionsService };

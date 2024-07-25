@@ -1,11 +1,11 @@
 const express = require('express');
-const { eventDecodeController, eventLatestInteractionsController, eventAllLatestInteractionsController } = require('../controllers/event.controller');
+const { eventDecodeController, eventAllInteractionsController, eventAllUserInteractionsController, } = require('../controllers/event.controller');
 const router = express.Router();
 
 router.post('/event/decode',eventDecodeController);
 
-router.get('/event/interactions/latest',eventLatestInteractionsController);
+router.get('/event/interactions/all',eventAllInteractionsController);
 
-router.get('/event/interactions/all/',eventAllLatestInteractionsController)
+router.get('/event/interactions/user/all',eventAllUserInteractionsController)
 
 module.exports = router;

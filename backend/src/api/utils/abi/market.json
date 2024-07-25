@@ -18,18 +18,23 @@
             },
             {
                 "internalType": "uint256",
-                "name": "_startTime",
-                "type": "uint256"
-            },
-            {
-                "internalType": "uint256",
-                "name": "_expirationTime",
+                "name": "_endTime",
                 "type": "uint256"
             },
             {
                 "internalType": "address",
                 "name": "_initOwner",
                 "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "_oracleAddress",
+                "type": "address"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_minBetAmount",
+                "type": "uint256"
             }
         ],
         "stateMutability": "nonpayable",
@@ -88,8 +93,70 @@
             {
                 "indexed": true,
                 "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "newAmount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "newOption",
+                "type": "uint8"
+            }
+        ],
+        "name": "BetUpdated",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "user",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "option",
+                "type": "uint8"
+            }
+        ],
+        "name": "Claimed",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [],
+        "name": "MarketCanceled",
+        "type": "event"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
                 "name": "marketAddress",
                 "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "minBetAmount",
+                "type": "uint256"
             },
             {
                 "indexed": false,
@@ -102,12 +169,6 @@
                 "internalType": "bytes",
                 "name": "eventHash",
                 "type": "bytes"
-            },
-            {
-                "indexed": false,
-                "internalType": "uint256",
-                "name": "startTime",
-                "type": "uint256"
             },
             {
                 "indexed": false,
@@ -152,6 +213,31 @@
         "type": "event"
     },
     {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": true,
+                "internalType": "address",
+                "name": "account",
+                "type": "address"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint256",
+                "name": "amount",
+                "type": "uint256"
+            },
+            {
+                "indexed": false,
+                "internalType": "uint8",
+                "name": "option",
+                "type": "uint8"
+            }
+        ],
+        "name": "Withdrawn",
+        "type": "event"
+    },
+    {
         "inputs": [
             {
                 "internalType": "address",
@@ -170,9 +256,21 @@
                 "internalType": "uint8",
                 "name": "option",
                 "type": "uint8"
+            },
+            {
+                "internalType": "bool",
+                "name": "claimed",
+                "type": "bool"
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "cancelMarket",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -184,12 +282,12 @@
     },
     {
         "inputs": [],
-        "name": "eventHash",
+        "name": "endTime",
         "outputs": [
             {
-                "internalType": "bytes",
+                "internalType": "uint256",
                 "name": "",
-                "type": "bytes"
+                "type": "uint256"
             }
         ],
         "stateMutability": "view",
@@ -197,12 +295,12 @@
     },
     {
         "inputs": [],
-        "name": "expirationTime",
+        "name": "eventHash",
         "outputs": [
             {
-                "internalType": "uint256",
+                "internalType": "bytes",
                 "name": "",
-                "type": "uint256"
+                "type": "bytes"
             }
         ],
         "stateMutability": "view",
@@ -223,6 +321,19 @@
     },
     {
         "inputs": [],
+        "name": "marketCanceled",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "marketResolved",
         "outputs": [
             {
@@ -236,12 +347,38 @@
     },
     {
         "inputs": [],
+        "name": "minBetAmount",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
         "name": "numberOfOptions",
         "outputs": [
             {
                 "internalType": "uint8",
                 "name": "",
                 "type": "uint8"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "oracle",
+        "outputs": [
+            {
+                "internalType": "contract IOracle",
+                "name": "",
+                "type": "address"
             }
         ],
         "stateMutability": "view",
@@ -286,29 +423,10 @@
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "internalType": "uint8",
-                "name": "_winningOption",
-                "type": "uint8"
-            }
-        ],
+        "inputs": [],
         "name": "resolveMarket",
         "outputs": [],
         "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "startTime",
-        "outputs": [
-            {
-                "internalType": "uint256",
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -367,6 +485,13 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "withdrawBet",
+        "outputs": [],
+        "stateMutability": "nonpayable",
         "type": "function"
     }
 ]

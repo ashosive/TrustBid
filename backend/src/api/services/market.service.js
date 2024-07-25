@@ -142,4 +142,52 @@ const marketInfoService = async (market) => {
     }
 }
 
-module.exports = { betService, claimService, userBetInfoService, totalBetsInfoService, marketInfoService }
+const resolveMarketService = async(market,from) => {
+    try {
+        const result = await getUnsignedNoParamsTxn(market,marketAbi,"resolveMarket",from);
+        console.log("txn ",result)
+
+        if(result.error){
+            return {
+                message: result.msg,
+                error: true
+            }
+        }
+
+        return {
+            message: result.msg,
+            error: false
+        }
+    } catch(err) {
+        return {
+            message: err.message,
+            error: true
+        }
+    }
+}
+
+const withdrawBetService = async (market, from) => {
+    try {
+        const result = await getUnsignedNoParamsTxn(market,marketAbi,"withdrawBet",from);
+        console.log("txn ",result)
+
+        if(result.error){
+            return {
+                message: result.msg,
+                error: true
+            }
+        }
+
+        return {
+            message: result.msg,
+            error: false
+        }
+    } catch(err) {
+        return {
+            message: err.message,
+            error: true
+        }
+    }
+}
+
+module.exports = { betService, claimService, userBetInfoService, totalBetsInfoService, marketInfoService, resolveMarketService, withdrawBetService }

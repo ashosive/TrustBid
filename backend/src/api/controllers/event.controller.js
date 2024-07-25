@@ -1,4 +1,4 @@
-const { eventHashService, eventLatestInteractionsService, eventAllLatestInteractionsService } = require("../services/event.service");
+const { eventHashService, eventAllInteractionsService, eventAllUserInteractionsService } = require("../services/event.service");
 const { handleError, handleResponse } = require("../utils/responseHelper");
 
 const eventDecodeController = async (req,res) => {
@@ -27,11 +27,11 @@ const eventDecodeController = async (req,res) => {
     }
 }
 
-const eventLatestInteractionsController = async (req,res) => {
+const eventAllInteractionsController = async (req,res) => {
     try {
         const market = req.query.market;
 
-        const result = await eventLatestInteractionsService(market);
+        const result = await eventAllInteractionsService(market);
 
         console.log("result events ",result)
 
@@ -51,7 +51,7 @@ const eventLatestInteractionsController = async (req,res) => {
     }
 }
 
-const eventAllLatestInteractionsController = async (req,res) => {
+const eventAllUserInteractionsController = async (req,res) => {
     try {
         const user = req.query.user;
 
@@ -59,7 +59,7 @@ const eventAllLatestInteractionsController = async (req,res) => {
             throw new Error("User required");
         }
 
-        const result = await eventAllLatestInteractionsService(user);
+        const result = await eventAllUserInteractionsService(user);
 
         console.log("result events ",result)
 
@@ -79,4 +79,4 @@ const eventAllLatestInteractionsController = async (req,res) => {
     }
 }
 
-module.exports = { eventDecodeController, eventLatestInteractionsController, eventAllLatestInteractionsController };
+module.exports = { eventDecodeController, eventAllInteractionsController, eventAllUserInteractionsController };

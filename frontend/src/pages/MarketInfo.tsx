@@ -147,9 +147,11 @@ const MarketInfo = ({
                 console.log("error fetching user bet info", err);
             }
         }
-        getBidInfo();
+        if(from){
+            getBidInfo();
+        }
         totalBetsInfo().then(r => {});
-    }, []);
+    }, [from]);
 
     useEffect(() => {
         const now = dayjs();
@@ -227,8 +229,10 @@ const MarketInfo = ({
                                 <div>Amount: <span className="amount">{userBidInfo[0] / 10**18}</span></div>
                             </div>
                         )
-                    ) : (
+                    ) : from ? (
                         <div className="loading">Loading....</div>
+                    ) : (
+                        <div className='loading'>Connect Metamask</div>
                     )}
                 </div>
             </div>
