@@ -1,0 +1,182 @@
+[
+  {
+    "id": "108",
+    "symbol": "LAA",
+    "title": "Los Angeles Angels of Anaheim",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/108.svg"
+  },
+  {
+    "id": "109",
+    "symbol": "AZ",
+    "title": "Arizona Diamondbacks",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/109.svg"
+  },
+  {
+    "id": "110",
+    "symbol": "BAL",
+    "title": "Baltimore Orioles",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/110.svg"
+  },
+  {
+    "id": "111",
+    "symbol": "BOS",
+    "title": "Boston Red Sox",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/111.svg"
+  },
+  {
+    "id": "112",
+    "symbol": "CHC",
+    "title": "Chicago Cubs",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/112.svg"
+  },
+  {
+    "id": "113",
+    "symbol": "CIN",
+    "title": "Cincinnati Reds",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/113.svg"
+  },
+  {
+    "id": "114",
+    "symbol": "CLE",
+    "title": "Cleveland Guardians",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/114.svg"
+  },
+  {
+    "id": "115",
+    "symbol": "COL",
+    "title": "Colorado Rockies",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/115.svg"
+  },
+  {
+    "id": "116",
+    "symbol": "DET",
+    "title": "Detroit Tigers",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/116.svg"
+  },
+  {
+    "id": "117",
+    "symbol": "HOU",
+    "title": "Houston Astros",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/117.svg"
+  },
+  {
+    "id": "118",
+    "symbol": "KC",
+    "title": "Kansas City Royals",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/118.svg"
+  },
+  {
+    "id": "119",
+    "symbol": "LAD",
+    "title": "Los Angeles Dodgers",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/119.svg"
+  },
+  {
+    "id": "120",
+    "symbol": "WSH",
+    "title": "Washington Nationals",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/120.svg"
+  },
+  {
+    "id": "121",
+    "symbol": "NYM",
+    "title": "New York Mets",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/121.svg"
+  },
+  {
+    "id": "133",
+    "symbol": "OAK",
+    "title": "Oakland Athletics",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/133.svg"
+  },
+  {
+    "id": "134",
+    "symbol": "PIT",
+    "title": "Pittsburgh Pirates",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/134.svg"
+  },
+  {
+    "id": "135",
+    "symbol": "SD",
+    "title": "San Diego Padres",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/135.svg"
+  },
+  {
+    "id": "136",
+    "symbol": "SEA",
+    "title": "Seattle Mariners",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/136.svg"
+  },
+  {
+    "id": "137",
+    "symbol": "SF",
+    "title": "San Francisco Giants",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/137.svg"
+  },
+  {
+    "id": "138",
+    "symbol": "STL",
+    "title": "St. Louis Cardinals",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/138.svg"
+  },
+  {
+    "id": "139",
+    "symbol": "TB",
+    "title": "Tampa Bay Rays",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/139.svg"
+  },
+  {
+    "id": "140",
+    "symbol": "TEX",
+    "title": "Texas Rangers",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/140.svg"
+  },
+  {
+    "id": "141",
+    "symbol": "TOR",
+    "title": "Toronto Blue Jays",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/141.svg"
+  },
+  {
+    "id": "142",
+    "symbol": "MIN",
+    "title": "Minnesota Twins",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/142.svg"
+  },
+  {
+    "id": "143",
+    "symbol": "PHI",
+    "title": "Philadelphia Phillies",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/143.svg"
+  },
+  {
+    "id": "144",
+    "symbol": "ATL",
+    "title": "Atlanta Braves",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/144.svg"
+  },
+  {
+    "id": "145",
+    "symbol": "CWS",
+    "title": "Chicago White Sox",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/145.svg"
+  },
+  {
+    "id": "146",
+    "symbol": "MIA",
+    "title": "Miami Marlins Cap",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/146.svg"
+  },
+  {
+    "id": "147",
+    "symbol": "NYY",
+    "title": "New York Yankees",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/147.svg"
+  },
+  {
+    "id": "158",
+    "symbol": "MIL",
+    "title": "Milwaukee Brewers",
+    "logo": "https://www.mlbstatic.com/team-logos/team-cap-on-light/158.svg"
+  }
+]

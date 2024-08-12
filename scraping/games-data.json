@@ -1,0 +1,235 @@
+[
+  {
+    "day": "Wednesday",
+    "date": "Aug 7",
+    "games": [
+      {
+        "awayTeam": "AZ",
+        "homeTeam": "CLE",
+        "gameInfo": "AZ 7, CLE 3"
+      },
+      {
+        "awayTeam": "AZ",
+        "homeTeam": "CLE",
+        "gameInfo": "AZ 5, CLE 3"
+      },
+      {
+        "awayTeam": "MIN",
+        "homeTeam": "CHC",
+        "gameInfo": "CHC 8, MIN 2"
+      },
+      {
+        "awayTeam": "HOU",
+        "homeTeam": "TEX",
+        "gameInfo": "HOU 6, TEX 4"
+      },
+      {
+        "awayTeam": "CWS",
+        "homeTeam": "OAK",
+        "gameInfo": "OAK 3, CWS 2"
+      },
+      {
+        "awayTeam": "LAA",
+        "homeTeam": "NYY",
+        "gameInfo": "NYY 5, LAA 2"
+      },
+      {
+        "awayTeam": "LAA",
+        "homeTeam": "NYY",
+        "gameInfo": "LAA 8, NYY 2"
+      },
+      {
+        "awayTeam": "SD",
+        "homeTeam": "PIT",
+        "gameInfo": "SD 9, PIT 8"
+      },
+      {
+        "awayTeam": "CIN",
+        "homeTeam": "MIA",
+        "gameInfo": "MIA 6, CIN 4"
+      },
+      {
+        "awayTeam": "SF",
+        "homeTeam": "WSH",
+        "gameInfo": "SF 7, WSH 4"
+      },
+      {
+        "awayTeam": "BAL",
+        "homeTeam": "TOR",
+        "gameInfo": "BAL 7, TOR 3"
+      },
+      {
+        "awayTeam": "MIL",
+        "homeTeam": "ATL",
+        "gameInfo": "MIL 8, ATL 5"
+      },
+      {
+        "awayTeam": "TB",
+        "homeTeam": "STL",
+        "gameInfo": "STL 5, TB 2"
+      },
+      {
+        "awayTeam": "BOS",
+        "homeTeam": "KC",
+        "gameInfo": "KC 8, BOS 4"
+      },
+      {
+        "awayTeam": "NYM",
+        "homeTeam": "COL",
+        "gameInfo": "NYM 5, COL 3"
+      },
+      {
+        "awayTeam": "DET",
+        "homeTeam": "SEA",
+        "gameInfo": "DET 6, SEA 2"
+      },
+      {
+        "awayTeam": "PHI",
+        "homeTeam": "LAD",
+        "gameInfo": "PHI 9, LAD 4"
+      }
+    ]
+  },
+  {
+    "day": "Thursday",
+    "date": "Aug 8",
+    "games": [
+      {
+        "awayTeam": "SF",
+        "homeTeam": "WSH",
+        "gameInfo": "12:05 PM ET"
+      },
+      {
+        "awayTeam": "MIL",
+        "homeTeam": "ATL",
+        "gameInfo": "12:20 PM ET"
+      },
+      {
+        "awayTeam": "SD",
+        "homeTeam": "PIT",
+        "gameInfo": "12:35 PM ET"
+      },
+      {
+        "awayTeam": "NYM",
+        "homeTeam": "COL",
+        "gameInfo": "3:10 PM ET"
+      },
+      {
+        "awayTeam": "CIN",
+        "homeTeam": "MIA",
+        "gameInfo": "6:10 PM ET"
+      },
+      {
+        "awayTeam": "LAA",
+        "homeTeam": "NYY",
+        "gameInfo": "7:05 PM ET"
+      },
+      {
+        "awayTeam": "BAL",
+        "homeTeam": "TOR",
+        "gameInfo": "7:07 PM ET"
+      },
+      {
+        "awayTeam": "TB",
+        "homeTeam": "STL",
+        "gameInfo": "7:15 PM ET"
+      },
+      {
+        "awayTeam": "DET",
+        "homeTeam": "SEA",
+        "gameInfo": "9:40 PM ET"
+      },
+      {
+        "awayTeam": "PHI",
+        "homeTeam": "AZ",
+        "gameInfo": "9:40 PM ET"
+      }
+    ]
+  },
+  {
+    "day": "Friday",
+    "date": "Aug 9",
+    "games": [
+      {
+        "awayTeam": "CLE",
+        "homeTeam": "MIN",
+        "gameInfo": "2:10 PM ET"
+      },
+      {
+        "awayTeam": "CLE",
+        "homeTeam": "MIN",
+        "gameInfo": "8:10 PM ET"
+      },
+      {
+        "awayTeam": "LAA",
+        "homeTeam": "WSH",
+        "gameInfo": "6:45 PM ET"
+      },
+      {
+        "awayTeam": "BAL",
+        "homeTeam": "TB",
+        "gameInfo": "6:50 PM ET"
+      },
+      {
+        "awayTeam": "TEX",
+        "homeTeam": "NYY",
+        "gameInfo": "7:05 PM ET"
+      },
+      {
+        "awayTeam": "OAK",
+        "homeTeam": "TOR",
+        "gameInfo": "7:07 PM ET"
+      },
+      {
+        "awayTeam": "HOU",
+        "homeTeam": "BOS",
+        "gameInfo": "7:10 PM ET"
+      },
+      {
+        "awayTeam": "SD",
+        "homeTeam": "MIA",
+        "gameInfo": "7:10 PM ET"
+      },
+      {
+        "awayTeam": "STL",
+        "homeTeam": "KC",
+        "gameInfo": "8:10 PM ET"
+      },
+      {
+        "awayTeam": "CHC",
+        "homeTeam": "CWS",
+        "gameInfo": "8:10 PM ET"
+      },
+      {
+        "awayTeam": "CIN",
+        "homeTeam": "MIL",
+        "gameInfo": "8:10 PM ET"
+      },
+      {
+        "awayTeam": "ATL",
+        "homeTeam": "COL",
+        "gameInfo": "8:40 PM ET"
+      },
+      {
+        "awayTeam": "PHI",
+        "homeTeam": "AZ",
+        "gameInfo": "9:40 PM ET"
+      },
+      {
+        "awayTeam": "PIT",
+        "homeTeam": "LAD",
+        "gameInfo": "10:10 PM ET"
+      },
+      {
+        "awayTeam": "NYM",
+        "homeTeam": "SEA",
+        "gameInfo": "10:10 PM ET"
+      },
+      {
+        "awayTeam": "DET",
+        "homeTeam": "SF",
+        "gameInfo": "10:15 PM ET"
+      }
+    ]
+  }
+]

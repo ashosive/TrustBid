@@ -1,4 +1,6 @@
 const marketAbi = require("../utils/abi/market.json");
+const marketFactoryAbi = require("../utils/abi/marketFactory.json");
+const { config } = require("../utils/config");
 const { getUnsignedTxn, getUnsignedNoParamsTxn, getReadFunction, getReadFunctionNoParams } = require("../utils/txnHelper");
 
 const betService = async (market, amount, option, from) => {
@@ -190,4 +192,29 @@ const withdrawBetService = async (market, from) => {
     }
 }
 
-module.exports = { betService, claimService, userBetInfoService, totalBetsInfoService, marketInfoService, resolveMarketService, withdrawBetService }
+const getAdminService = async () => {
+    try {
+        const data = config();
+        const result = await getReadFunctionNoParams(data.factory,marketFactoryAbi,"owner");
+        console.log("admin function call ",result)
+
+        if(result.error){
+            return {
+                message: result.msg,
+                error: true
+            }
+        }
+
+        return {
+            message: result.msg,
+            error: false
+        }
+    } catch(err) {
+        return {
+            message: err.message,
+            error: true
+        }
+    }
+}
+
+module.exports = { betService, claimService, userBetInfoService, totalBetsInfoService, marketInfoService, resolveMarketService, withdrawBetService, getAdminService }

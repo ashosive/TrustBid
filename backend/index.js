@@ -10,6 +10,7 @@ const tokenRoutes = require("./src/api/routes/token.route");
 const subgraphRoutes = require("./src/api/routes/subgraph.route");
 const marketRoutes = require("./src/api/routes/market.route");
 const eventRoutes = require("./src/api/routes/event.route");
+const gameRoutes = require("./src/api/routes/game.route");
 
 // app.use(express.static(path.join(__dirname, 'public')));
 
@@ -38,6 +39,8 @@ app.get('/', (req, res) => {
 });
 
 app.use(tokenRoutes);
+
+app.use(gameRoutes);
 
 app.use(subgraphRoutes);
 

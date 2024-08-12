@@ -32,7 +32,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user}) => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const result = await axios.get(`${Config.apiBaseUrl}/event/interactions/all?user=${user}`); // Replace with your API endpoint
+        const result = await axios.get(`${Config.apiBaseUrl}/event/interactions/user/all?user=${user}`); // Replace with your API endpoint
         console.log("result ", result.data.result)
         setDashboardData(result.data.result);
       } catch (error) {

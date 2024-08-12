@@ -6,23 +6,27 @@ function getAbiCoderInstance() {
 }
 
 
-function encode(title, options) {
-    // Create a new prediction market with hashed event data
-    const encodedData = getAbiCoderInstance().encode(
-        ["string", "string[]"],
-        [title, options]
-    );
+function encode(title, options,otherTeamInfos) {
+    try {
+        // Create a new prediction market with hashed event data
+        const encodedData = getAbiCoderInstance().encode(
+            ["string", "string[]","tuple(string id, string symbol, string title, string logo)[]"],
+            [title, options,otherTeamInfos]
+        );
 
-    console.log("ecoded", encodedData)
-    // const hash = ethers.keccak256(encodedData);
-    // console.log("hash ", hash);
-    return encodedData;
+        console.log("encoded", encodedData)
+
+        return { msg: encodedData, error: false };
+    } catch(err) {
+        return { msg: err.message, error: true };
+    }
+    
 }
 
 function decode(hash) {
     try {
         const decodedData = getAbiCoderInstance().decode(
-            ["string", "string[]"],
+            ["string", "string[]","tuple(string id, string symbol, string title, string logo)[]"],
             hash
         );
     

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Routes, useParams } from 'react-router-
 import MarketInfo from './pages/MarketInfo';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
+import AdminPage from './pages/AdminPage';
 
 interface Market {
   eventHash: string;
@@ -35,6 +36,7 @@ function App() {
             element={<MarketInfoComponentWrapper markets={markets} account={connectedAccount} />}
           />
           <Route path='/dashboard' element={<Dashboard user={connectedAccount}/>} />
+          <Route path='/admin' element={<AdminPage user={connectedAccount}/>} />
         </Routes>
       </Router>
     </div>

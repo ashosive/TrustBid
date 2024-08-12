@@ -1,4 +1,4 @@
-const { betService, claimService, userBetInfoService, totalBetsInfoService, marketInfoService, withdrawBetService, resolveMarketService } = require("../services/market.service");
+const { betService, claimService, userBetInfoService, totalBetsInfoService, marketInfoService, withdrawBetService, resolveMarketService, getAdminService } = require("../services/market.service");
 const { handleError, handleResponse } = require("../utils/responseHelper");
 
 
@@ -184,4 +184,20 @@ const withdrawBetController = async (req,res) => {
     }
 }
 
-module.exports = { betController, claimController, userBetInfoController, totalBetsInfoController, marketInfoController, withdrawBetController, resolveMarketController };
+const getAdminController = async (req,res) => {
+    try {
+        const result = await getAdminService();
+
+        console.log("get admin ",result);
+
+        handleResponse({res, statusCode: 201, result: result.message})
+    } catch(err) {
+        if (err instanceof TypeError) {
+            handleError({ res, statusCode: 400, err: err.message });
+        } else {// internal error
+            handleError({ res, statusCode: 500, err: err.message });
+        }
+    }
+}
+
+module.exports = { betController, claimController, userBetInfoController, totalBetsInfoController, marketInfoController, withdrawBetController, resolveMarketController, getAdminController };
