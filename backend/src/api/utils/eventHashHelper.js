@@ -5,7 +5,8 @@ function getAbiCoderInstance() {
     return defaultAbiCoderInstance;
 }
 
-
+ 
+    
 function encode(title, options,otherTeamInfos) {
     try {
         // Create a new prediction market with hashed event data
@@ -25,10 +26,19 @@ function encode(title, options,otherTeamInfos) {
 
 function decode(hash) {
     try {
-        const decodedData = getAbiCoderInstance().decode(
-            ["string", "string[]","tuple(string id, string symbol, string title, string logo)[]"],
-            hash
-        );
+        let decodedData
+        if(hash.length <= 706){
+            decodedData = getAbiCoderInstance().decode(
+                ["string", "string[]"],
+                hash
+            );
+        } else {
+            decodedData = getAbiCoderInstance().decode(
+               ["string", "string[]","tuple(string id, string symbol, string title, string logo)[]"],
+               hash
+           );
+
+        }
     
         console.log("decode ", decodedData);
 

@@ -1,4 +1,4 @@
-const { fetchMatches } = require("../utils/matchScheduleFetcher");
+const { fetchMatches, fetchMatchInfo } = require("../utils/matchScheduleFetcher");
 const teams = require("../utils/teams.json");
 
 const fetchTeamsService = async () => {
@@ -68,4 +68,21 @@ const fetchTeamInfoService = async (queryParam) => {
     }
 }
 
-module.exports = { fetchTeamsService, fetchMatchesService, fetchTeamInfoService }
+const fetchMatchInfoService = async (date,title) => {
+    try {
+        const result = await fetchMatchInfo(date,title);
+
+        if(result.error){
+            throw new Error(result.msg);
+        }
+
+        return { error: false, message: result.msg };
+    } catch(err) {
+        return {
+            message: err.message,
+            error: true
+        }
+    }
+}
+
+module.exports = { fetchTeamsService, fetchMatchesService, fetchTeamInfoService, fetchMatchInfoService }

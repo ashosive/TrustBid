@@ -16,6 +16,7 @@ interface Market {
   blockTimestamp: string;
   title: string; // Added title field
   options: string[]; // Added options field, assuming it's an array of strings
+  teamDetails: string[] | null
 }
 
 interface MarketProps {
@@ -40,6 +41,7 @@ const MarketPage = ({ markets, setMarkets }: MarketProps) => {
                         console.log("decode values ", decodeHash.data.result);
                         subMarkets[i].title = decodeHash.data.result[0];
                         subMarkets[i].options = decodeHash.data.result[1];
+                        subMarkets[i].teamDetails = decodeHash.data.result[2] ?? undefined;
                         // subMarkets[i].startTime = new Date(parseInt(subMarkets[i].startTime) * 1000).toISOString();
                         subMarkets[i].expirationTime = new Date(parseInt(subMarkets[i].expirationTime) * 1000).toISOString();
                     })
@@ -57,8 +59,8 @@ const MarketPage = ({ markets, setMarkets }: MarketProps) => {
     const filterMarkets = (markets: Market[]) => {
         const now = new Date();
         switch (filter) {
-            // case 'Latest':
-            //     return markets.sort((a, b) => new Date(b.startTime).getTime() - new Date(a.startTime).getTime());
+            case 'Latest':
+                return markets.sort((a, b) => Number(b.blockTimestamp) - Number(a.blockTimestamp));
             case 'Ending Soon':
                 return markets.filter(market => new Date(market.expirationTime) > now)
                     .sort((a, b) => new Date(a.expirationTime).getTime() - new Date(b.expirationTime).getTime());

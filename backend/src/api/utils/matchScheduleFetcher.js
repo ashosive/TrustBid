@@ -42,4 +42,59 @@ async function fetchMatches(date) {
     }
 }
 
-module.exports = { fetchMatches };
+async function fetchMatchInfo(date,title) {
+    try {
+        const matches = await fetchMatches(date);
+
+        if(matches.error){
+            throw new Error(matches.msg);
+        }
+
+        const textDate = formatDateToText(date);
+
+        if(textDate.error){
+            throw new Error(textDate.msg);
+        }
+
+        const [awayTeam, homeTeam] = title.split(' vs ');
+
+        const matchInfo = matches.msg
+            .find(dayEntry => dayEntry.date === textDate.msg)
+            ?.games
+            .find(game => game.awayTeam === awayTeam && game.homeTeam === homeTeam) || null;
+        
+        console.log(matchInfo);
+
+        if(!matchInfo) {
+            throw new Error("match not found!");
+        }
+        
+        return { msg: matchInfo, error: false };
+    } catch(error) {
+        console.error('Error fetching team info', error);
+        return { msg: error.message, error: true };
+    }
+}
+
+function formatDateToText(dateString) {
+    try {
+        const months = [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+    
+        const date = new Date(dateString);
+        const day = date.getDate();
+        const month = months[date.getMonth()];
+    
+        const result =  `${month} ${day}`;
+
+        return { msg: result, error: false };
+    } catch(error) {
+        console.error('Error in converting date to text date ', error);
+        return { msg: error.message, error: true };
+    }
+}
+
+
+module.exports = { fetchMatches, fetchMatchInfo };

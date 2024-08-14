@@ -6,6 +6,7 @@ const { convertDateToUnix } = require("../utils/dateToUnix");
 
 const eventHashService = async (eventHash) => {
     try {
+        console.log(eventHash.length)
         const result = decode(eventHash);
 
         if(result.error){

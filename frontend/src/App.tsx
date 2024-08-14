@@ -7,7 +7,7 @@ import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import AdminPage from './pages/AdminPage';
 
-interface Market {
+export interface Market {
   eventHash: string;
   expirationTime: string;
   id: string;
@@ -18,6 +18,7 @@ interface Market {
   blockTimestamp: string;
   title: string; // Added title field
   options: string[]; // Added options field, assuming it's an array of strings
+  teamDetails: string[] | null
 }
 
 function App() {
