@@ -3,7 +3,7 @@ import axios from "axios";
 import config from "../config";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./AdminPage.css";
-import { Tabs, Tab, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { Tabs, Tab, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import dayjs from 'dayjs';
 
 interface UserDetailsProps {
@@ -166,6 +166,21 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
     setTabIndex(newValue);
   };
 
+  const handleCancelEvent = async (marketAddress: string) => {
+    try {
+      await axios.post(`http://localhost:3000/market/cancel`, { marketAddress });
+      console.log(`Event at market address ${marketAddress} canceled successfully.`);
+      setEvents(events.filter(event => event.marketAddress !== marketAddress));
+    } catch (err) {
+      console.error("Error canceling event:", err);
+    }
+  };
+
+  const handleResolveEvent = (eventId: string) => {
+    // Handle resolve event logic here
+    console.log(`Event ${eventId} resolved.`);
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -267,7 +282,6 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
                     matches.map((match, index) => (
                       <TableRow key={index}>
                         <TableCell>{match.date}</TableCell>
-
                         <TableCell className="table-cell-teams">
                           <div className="team-info">
                             <img src={match.homeTeamLogo} alt={match.homeTeam} className="team-logo-small" />
@@ -298,16 +312,16 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
 
         <TabPanel value={tabIndex} index={1}>
           <div className="events-section">
-            <h2>Events</h2>
+            <h2>Market</h2>
             <TableContainer component={Paper}>
               <Table className="event-table">
                 <TableHead>
                   <TableRow>
                     <TableCell>Event Title</TableCell>
-                    <TableCell>Owner</TableCell>
                     <TableCell>Expiration Time</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Teams</TableCell>
+                    <TableCell>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -315,7 +329,6 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
                     events.map((event, index) => (
                       <TableRow key={index}>
                         <TableCell>{event.eventTitle}</TableCell>
-                        <TableCell>{event.owner}</TableCell>
                         <TableCell>{dayjs.unix(parseInt(event.expirationTime)).format('YYYY-MM-DD HH:mm')}</TableCell>
                         <TableCell>{dayjs().isBefore(dayjs.unix(parseInt(event.expirationTime))) ? 'Active' : 'Expired'}</TableCell>
                         <TableCell className="table-cell-teams">
@@ -325,6 +338,17 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
                               <span>{team.name}</span>
                             </div>
                           ))}
+                        </TableCell>
+                        <TableCell>
+                          {dayjs().isBefore(dayjs.unix(parseInt(event.expirationTime))) ? (
+                            <Button variant="contained" color="secondary" onClick={() => handleCancelEvent(event.marketAddress)}>
+                              Cancel
+                            </Button>
+                          ) : (
+                            <Button variant="contained" color="primary" onClick={() => handleResolveEvent(event.id)}>
+                              Resolve
+                            </Button>
+                          )}
                         </TableCell>
                       </TableRow>
                     ))
