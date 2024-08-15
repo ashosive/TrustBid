@@ -58,7 +58,7 @@ const MarketInfoComponentWrapper: React.FC<{ markets: Market[], account: string 
   title={market.title}
   options={market.options}
   from={account}
-  /> : null
+  teamDetails={market.teamDetails}/> : null
 };
 
 export default App;

@@ -1,0 +1,24 @@
+.button-container {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the start */
+    margin-bottom: 20px;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 16px;
+    color: black;
+    margin-right: 10px; /* Space between buttons */
+}
+
+.tab-button.active {
+    border-bottom: 2px solid black;
+}
+
+.table-container {
+    margin-top: 20px;
+}
