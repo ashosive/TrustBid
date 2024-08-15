@@ -81,6 +81,8 @@ const eventAllUserInteractionsService = async (user) => {
         // gets all the markets 
         const markets = await queryGraph();
 
+        console.log(markets.msg)
+
         if(markets.error){
             throw new Error(markets.msg);
         }

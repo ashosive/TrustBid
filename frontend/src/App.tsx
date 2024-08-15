@@ -6,6 +6,7 @@ import MarketInfo from './pages/MarketInfo';
 import Navbar from './components/Navbar';
 import Dashboard from './pages/Dashboard';
 import AdminPage from './pages/AdminPage';
+import Footer from './components/Footer';
 
 export interface Market {
   eventHash: string;
@@ -27,7 +28,8 @@ function App() {
   const [markets, setMarkets] = useState<Market[]>([]);
 
   return (
-    <div>
+    <div className="container">
+      <div className="content">
       <Router>
       <Navbar connectedAccount={connectedAccount} setConnectedAccount={setConnectedAccount} setAccountBalance={setAccountBalance} accountBalance={accountBalance} />
         <Routes>
@@ -36,10 +38,15 @@ function App() {
             path="/market/:i/:id"
             element={<MarketInfoComponentWrapper markets={markets} account={connectedAccount} />}
           />
-          <Route path='/dashboard' element={<Dashboard user={connectedAccount}/>} />
+          <Route path='/dashboard' element={<Dashboard user={connectedAccount} markets={markets}/>} />
           <Route path='/admin' element={<AdminPage user={connectedAccount}/>} />
         </Routes>
-      </Router>
+        </Router>
+        </div>
+        <nav className="navbar">
+          {/* Your navbar content */}
+          <Footer/>
+        </nav>
     </div>
   );
 }

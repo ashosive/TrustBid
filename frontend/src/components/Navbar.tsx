@@ -50,7 +50,7 @@ const Navbar = ({ connectedAccount, accountBalance, setAccountBalance, setConnec
 
     return (
         <div className="navbar">
-            <h1 className="navbar-title">Trust Bid</h1>
+            <h1 className="navbar-title"><a href='/' className="navbar-link">Trust Bid</a></h1>
             <div className="navbar-connect">
                 {connectedAccount ? (
                     <button className="disconnect-btn" onClick={handleDisconnectWallet}>
@@ -68,9 +68,11 @@ const Navbar = ({ connectedAccount, accountBalance, setAccountBalance, setConnec
                     </button>
                 )}
                 {/* Dashboard button */}
-                <Link to="/dashboard" className="dashboard-link">
-                    Dashboard
-                </Link>
+                <div>
+                    <Link to="/dashboard" className="dashboard-link">
+                        Dashboard
+                    </Link>
+                </div>
             </div>
         </div>
     );

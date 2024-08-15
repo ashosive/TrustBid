@@ -11,6 +11,5 @@ router.get('/event/convert/date-to-unix',eventConvertDateToUnixController);
 router.get('/event/interactions/all',eventAllInteractionsController);
 
 router.get('/event/interactions/user/all',eventAllUserInteractionsController)
-router.get('/event/interactions/user/all',eventAllUserInteractionsController)
 
 module.exports = router;

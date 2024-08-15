@@ -87,12 +87,12 @@ const MarketPage = ({ markets, setMarkets }: MarketProps) => {
                     <option value="Ended">Ended</option>
                 </select>
             </div>
-            <div>
+            <div >
                 {filteredMarkets.length > 0 ? (
-                    <div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, justifyContent: 'center' }}>
                         {filteredMarkets.map((market, i) => (
-                            <div key={market.id}>
-                                <Link to={`/market/${i}/${market.id}`}>
+                            <div key={market.id} style={{padding: "5px", margin: "0px 10px",maxWidth: 345, width: 345 , flex: '1 1 calc(33.333% - 32px)'}}>
+                                <Link to={`/market/${i}/${market.id}`} style={{textDecoration: 'none'}}>
                                     <MarketCard market={market}/>
                                 </Link>
                             </div>

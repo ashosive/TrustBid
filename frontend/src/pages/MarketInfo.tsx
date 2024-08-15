@@ -93,7 +93,7 @@ const MarketInfo = ({
             }
             const result = await axios.post(`${Config.apiBaseUrl}/market/bet`, {
                 market: marketAddress,
-                amount: String(amount * 10**18),
+                amount: String(amount),
                 option: selectedOption,
                 from: from
             });
