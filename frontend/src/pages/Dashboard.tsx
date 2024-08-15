@@ -57,42 +57,6 @@ interface TabPanelProps {
   value: number;
 }
 
-const PositionsTable = () => (
-  <TableContainer component={Paper} sx={{ backgroundColor: '#f5f5f5', boxShadow: 0 }}>
-    <Table>
-      <TableHead>
-        <TableRow>
-          <StyledTableCell>Market</StyledTableCell>
-          <StyledTableCell align="right">Avg</StyledTableCell>
-          <StyledTableCell align="right">Current</StyledTableCell>
-          <StyledTableCell align="right">Value</StyledTableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {positionsData.map((row, index) => (
-          <TableRow
-            key={index}
-            sx={{
-              backgroundColor: '#f5f5f5',
-              '&:hover': {
-                backgroundColor: 'action.hover',
-              },
-            }}
-          >
-            <TableCell component="th" scope="row">
-              {row.market}
-            </TableCell>
-            <TableCell align="right">{row.avg}</TableCell>
-            <TableCell align="right">{row.current}</TableCell>
-            <TableCell align="right">{row.value}</TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </TableContainer>
-);
-
-
 
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -124,16 +88,80 @@ const positionsData = [
   // Add more data as needed
 ];
 
-const activityData = [
-  { market: 'Market 1', amount: 500, type: 'Buy' },
-  { market: 'Market 2', amount: 300, type: 'Sell' },
-  // Add more data as needed
-];
+// Function to fetch total bets info for a given market
+async function getTotalBetsInfo(marketAddress: string): Promise<TotalBetsInfo | null> {
+  try {
+    const response = await axios.post('http://localhost:3000/market/totalBetsInfo', {
+      market: marketAddress,
+    });
+
+    console.log(response.data)
+    if (response.data.result) {
+      return {totalBetAmount: response.data.result.totalBidAmount, betAmountsByOption: response.data.result.options}  as TotalBetsInfo;
+    } else {
+      console.error('Invalid response format:', response.data);
+      return null;
+    }
+  } catch (error) {
+    console.error('Error fetching total bets info:', error);
+    return null;
+  }
+}
+
+async function calculatePositions(details: EventData[], markets: Market[]): Promise<Position[]> {
+  const marketPositions: Position[] = [];
+
+  await Promise.all(details.map(async (detail) => {
+    if (detail.event === 'BetPlaced') {
+      const marketData = markets.find(market => market.marketAddress === detail.market);
+      if (marketData) {
+        const marketName = marketData.title;
+        const amountInEther = parseFloat(detail.values.amount) / 1e18;
+        if(new Date(marketData.expirationTime) > new Date()){
+          const totalBetInfo = await getTotalBetsInfo(marketData.marketAddress);
+          const optionIndex = detail.values.option == marketData.options[0] ? 0 : 1;
+          const nonOptionIndex =  detail.values.option == '1' ? 1 : 0;
+          // Safely access properties and perform calculations
+          const totalBetAmount = parseFloat(totalBetInfo?.totalBetAmount.toString() || '0') / 1e18; // Convert from wei to ether
+          const totalOptionBetAmount = parseFloat(totalBetInfo?.betAmountsByOption[Number(detail.values.option)].toString() || '0') / 1e18; // Convert from wei to ether
+          const totalNonOptionBetAmount = parseFloat(totalBetInfo?.betAmountsByOption[nonOptionIndex].toString() || '0') / 1e18; // Convert from wei to ether
+          console.log(totalOptionBetAmount === 0 ? 0 : totalNonOptionBetAmount === 0 ? Number(detail.values.amount) / 1e18 : (amountInEther * totalNonOptionBetAmount) / totalOptionBetAmount,totalOptionBetAmount, totalNonOptionBetAmount , totalBetInfo?.betAmountsByOption, detail.values.option)
+          const userMarketInfo: Position = {
+            current: amountInEther,
+            market: marketData.title,
+            option: marketData.options[Number(detail.values.option)],
+            totalBetAmount: totalBetAmount,
+            totalOptionBetAmount: totalOptionBetAmount,
+            expect: totalOptionBetAmount === 0 ? 0 : totalNonOptionBetAmount === 0 ? amountInEther : (amountInEther * totalNonOptionBetAmount) / totalOptionBetAmount
+          };
+
+          marketPositions.push(userMarketInfo)
+        }
+      }
+    }
+  }));
+
+  return marketPositions;
+}
 
 interface Activity {
   market: string,
   amount: string,
   type: string
+}
+
+interface Position {
+  market: string;
+  current: number;
+  expect: number;
+  totalBetAmount: number;
+  totalOptionBetAmount: number;
+  option: string;
+}
+
+interface TotalBetsInfo {
+  totalBetAmount: number;
+  betAmountsByOption: Record<string, number>;
 }
 
 const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
@@ -143,8 +171,12 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
   } | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [value, setValue] = React.useState(0);
-  const [positions, setPositions] = useState([]);
+  const [positions, setPositions] = useState<Position[]>([]);
   const [activity, setActivity] = useState<Activity[]>([]);
+  const [positionValue, setPositionValue] = useState(0);
+  const [profitOrLoss, setProfitOrLoss] = useState(0);
+  const [volumeTraded, setVolumeTraded] = useState(0);
+  const [marketTraded, setMarketTraded] = useState(0);
 
   const ActivityTable = () => (
   <TableContainer component={Paper} sx={{ backgroundColor: '#f5f5f5', boxShadow: 0 }}>
@@ -179,6 +211,41 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
   </TableContainer>
 );
 
+const PositionsTable = () => (
+  <TableContainer component={Paper} sx={{ backgroundColor: '#f5f5f5', boxShadow: 0 }}>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <StyledTableCell>Market</StyledTableCell>
+          <StyledTableCell align="right">Option</StyledTableCell>
+          <StyledTableCell align="right">Current</StyledTableCell>
+          <StyledTableCell align="right">Value</StyledTableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {positions.map((row, index) => (
+          <TableRow
+            key={index}
+            sx={{
+              backgroundColor: '#f5f5f5',
+              '&:hover': {
+                backgroundColor: 'action.hover',
+              },
+            }}
+          >
+            <TableCell component="th" scope="row">
+              {row.market}
+            </TableCell>
+            <TableCell align="right">{row.option}</TableCell>
+            <TableCell align="right">{row.current}</TableCell>
+            <TableCell align="right">{row.expect}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
+
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -187,7 +254,25 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
         const result = await axios.get(`${Config.apiBaseUrl}/event/interactions/user/all?user=${user}`);
         setDashboardData(result.data.result);
         const activities = filterActivityData(result.data.result.details,markets)
+        const positions = await calculatePositions(result.data.result.details,markets);
         setActivity(activities);
+        setPositions(positions);
+        setMarketTraded(activities.length);
+        const totalAmount = activities.reduce((total, activity) => {
+          // Convert amount from string to number (assuming it's in wei)
+          if(activity.type == 'Buy'){
+            const amountInNumber = Number(activity.amount) ; // Convert wei to ether
+            return total + amountInNumber;
+          } else {
+            return total
+          }
+        }, 0);
+        setVolumeTraded(totalAmount);
+        const positionValue = positions.reduce((total,postion) => {
+          return total + postion.expect
+        }, 0);
+        setPositionValue(positionValue);
+        setProfitOrLoss(positionValue);
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
         // Handle error as needed
@@ -221,7 +306,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
       return {
         market: marketName,
         amount: amountInEther,
-        type: detail.event === 'BetPlaced' ? 'Buy' : 'Sell', // Adjust this based on the event type
+        type: detail.event === 'BetPlaced' ? 'Buy' : detail.event === 'Claimed' ? 'Sell' : 'Withdraw', // Adjust this based on the event type
         // user: detail.values.user,
         // transactionHash: detail.transactionHash,
         // timestamp: new Date(detail.timestamp * 1000).toLocaleString(), // Convert timestamp to human-readable date
@@ -271,7 +356,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
                   borderRadius: '8px',
                 }}
               >
-                <UserStats title="Positions value" value="$0.00" />
+                <UserStats title="Positions value" value={"$"+positionValue} />
               </Grid>
               <Grid
                 item
@@ -282,7 +367,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
                   borderRadius: '8px',
                 }}
               >
-                <UserStats title="Profit/Loss" value="$0.00" />
+                <UserStats title="Profit/Loss" value={"$"+profitOrLoss} />
               </Grid>
               <Grid
                 item
@@ -293,7 +378,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
                   borderRadius: '8px',
                 }}
               >
-                <UserStats title="Volume traded" value="$0.00" />
+                <UserStats title="Volume traded" value={'$'+volumeTraded.toString()} />
               </Grid>
               <Grid
                 item
@@ -304,7 +389,7 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
                   borderRadius: '8px',
                 }}
               >
-                <UserStats title="Markets traded" value="0" />
+                <UserStats title="Markets traded" value={(marketTraded).toString()} />
               </Grid>
             </Grid>
           </SummaryCard>
@@ -313,7 +398,6 @@ const Dashboard: React.FC<UserDetailsProps> = ({user, markets}) => {
             <CircularProgress />
           ) : (
             <Box>
-              <PieChart details={dashboardData?.details || []} />
               <Box sx={{ mt: 2 }}>
               <Box sx={{ width: '100%' }}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>

@@ -21,7 +21,7 @@ interface EventData {
     transactionHash: string;
 }
 
-interface EventActivityTableProps {
+export interface EventActivityTableProps {
     eventData: EventData[];
     setEvents: React.Dispatch<React.SetStateAction<EventData[]>>;
     market: string;

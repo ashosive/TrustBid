@@ -73,6 +73,12 @@ const Navbar = ({ connectedAccount, accountBalance, setAccountBalance, setConnec
                         Dashboard
                     </Link>
                 </div>
+                {/* Admin button */}
+                <div>
+                    <Link to="/admin" className="dashboard-link">
+                        Admin
+                    </Link>
+                </div>
             </div>
         </div>
     );

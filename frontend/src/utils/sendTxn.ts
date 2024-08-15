@@ -2,6 +2,7 @@ import waitForTransactionConfirmation from "./waitForTxn";
 
 async function sendTxn(txn:object|string) {
     try {
+      console.log("txn ",txn)
         const result = await window.ethereum.request({ method: 'eth_sendTransaction', params: [JSON.parse(txn as string)]});
         console.log("metamask result ", result);
 

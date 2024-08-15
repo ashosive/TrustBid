@@ -3,7 +3,7 @@ import './MarketCard.css';
 import { Card, CardActionArea, CardContent, Typography, Box, Button } from '@mui/material';
 import axios from 'axios';
 import Config from "../config";
-import MarketInfo from '../pages/MarketInfo';
+// import MarketInfo from '../pages/MarketInfo';
 import { useTheme } from '@emotion/react';
 
 interface MarketCardProps {

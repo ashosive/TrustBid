@@ -5,6 +5,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./AdminPage.css";
 import { Tabs, Tab, Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
 import dayjs from 'dayjs';
+import sendTxn from "../utils/sendTxn";
 
 interface UserDetailsProps {
   user: string;
@@ -14,6 +15,7 @@ interface TeamInfo {
   id: string;
   title: string;
   logo: string;
+  symbol: string;
 }
 
 interface Match {
@@ -42,16 +44,31 @@ interface EventData {
   }[];
 }
 
+
+
 const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [teams, setTeams] = useState<TeamInfo[] | null>(null);
   const [team1, setTeam1] = useState("");
   const [team2, setTeam2] = useState("");
-  const [gameTime, setGameTime] = useState("");
+  const [gameTime, setGameTime] = useState('');
   const [matches, setMatches] = useState<Match[]>([]);
   const [events, setEvents] = useState<EventData[]>([]);
   const [tabIndex, setTabIndex] = useState(0);
+
+  // Helper function to format time to 12-hour AM/PM format
+  const formatTimeTo12Hour = (dateTime: string): string => {
+    const date = new Date(dateTime);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    console.log(hours,minutes);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = ((hours % 12) || 12).toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    const timePart = gameTime.split('T')[0]
+    return `${timePart} ${formattedHours}:${formattedMinutes} ${period}`;
+  };
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -154,12 +171,66 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
     fetchEvents();
   }, []);
 
-  const handleSubmit = (e: any) => {
+  const getCreateMarketTxn = async (user: string, hash: string, noOfOptions: string, expireTime: string) => {
+    try {
+      const result = await axios.post(`${config.apiBaseUrl}/market/create`,{
+        user,
+        hash,
+        noOfOptions,
+        expireTime
+      });
+
+      return await sendTxn(result.data.result);
+    } catch(err: any) {
+      console.log("error while getting create market data",err);
+    }
+  }
+
+  const getEncodeData = async (dateToEncode: any) => {
+    try {
+      const result =  await axios.post(`${config.apiBaseUrl}/event/encode`,{
+        title: dateToEncode.title,
+        options: dateToEncode.options,
+        teamDetails: dateToEncode.teamDetails
+      });
+
+      return result.data.result;
+    } catch(err: any) {
+      console.log("error while encoding data",err);
+    }
+  }
+
+  const handleSubmit =  async (e: any) => {
     e.preventDefault();
     console.log("Team 1:", team1);
     console.log("Team 2:", team2);
-    console.log("Game Time:", gameTime);
+    console.log("Game Time:", formatTimeTo12Hour(gameTime));
     // Handle form submission logic here
+    // console.log(teams);
+
+    const team1Info = teams?.find((team) => team.id == team1);
+    const team2Info = teams?.find((team) => team.id == team2);
+    console.log(team1Info,team2Info)
+
+    const dataToEncode = {
+      title: `${team1Info?.title} vs ${team2Info?.title}`,
+      options: [team1Info?.symbol, team2Info?.symbol],
+      teamDetails: [
+        team1Info,team2Info
+      ]
+    };
+
+    const hash = await getEncodeData(dataToEncode);
+    console.log(
+      "hash ", hash
+    )
+    const expireTime = new Date(`${gameTime} UTC-4`);
+    console.log("expiretime",expireTime)
+    const timestamp =  Math.floor(expireTime.getTime() / 1000);
+    console.log("timestamop ",timestamp)
+
+    await getCreateMarketTxn(user,hash,"2",timestamp.toString())
+
   };
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -192,6 +263,8 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
   if (!user) {
     return <div>Please connect MetaMask</div>;
   }
+
+
 
   return (
     <div className="admin-page">
@@ -239,17 +312,14 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
           </div>
           <div className="form-group">
             <label htmlFor="gameTime" className="form-label">Select Game Time:</label>
-            <select
+            <input
+              type="datetime-local"
               id="gameTime"
               value={gameTime}
               onChange={(e) => setGameTime(e.target.value)}
-              className="form-select"
-            >
-              <option value="">11:20 AM</option>
-              <option value="2:00 PM">2:00 PM</option>
-              <option value="3:00 PM">3:00 PM</option>
-              <option value="4:00 PM">4:00 PM</option>
-            </select>
+              className="form-control"
+            />
+
           </div>
           <div className="button-group">
             <button type="button" className="clear-btn">clear</button>
@@ -318,6 +388,7 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell>Event Title</TableCell>
+                    <TableCell>Market</TableCell>
                     <TableCell>Expiration Time</TableCell>
                     <TableCell>Status</TableCell>
                     <TableCell>Teams</TableCell>
@@ -329,6 +400,7 @@ const AdminPage: React.FC<UserDetailsProps> = ({ user }) => {
                     events.map((event, index) => (
                       <TableRow key={index}>
                         <TableCell>{event.eventTitle}</TableCell>
+                        <TableCell>{event.marketAddress}</TableCell>
                         <TableCell>{dayjs.unix(parseInt(event.expirationTime)).format('YYYY-MM-DD HH:mm')}</TableCell>
                         <TableCell>{dayjs().isBefore(dayjs.unix(parseInt(event.expirationTime))) ? 'Active' : 'Expired'}</TableCell>
                         <TableCell className="table-cell-teams">

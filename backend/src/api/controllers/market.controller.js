@@ -140,7 +140,7 @@ const resolveMarketController = async (req,res) => {
             throw new TypeError("require body values market, from");
         }
 
-        const result = await resolveMarketService(market);
+        const result = await resolveMarketService(market,from);
 
         console.log("result txn ",result)
 
@@ -166,7 +166,7 @@ const withdrawBetController = async (req,res) => {
             throw new TypeError("require body values market, from");
         }
 
-        const result = await withdrawBetService(market);
+        const result = await withdrawBetService(market,from);
 
         console.log("result txn ",result)
 

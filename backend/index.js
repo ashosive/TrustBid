@@ -11,7 +11,7 @@ const subgraphRoutes = require("./src/api/routes/subgraph.route");
 const marketRoutes = require("./src/api/routes/market.route");
 const eventRoutes = require("./src/api/routes/event.route");
 const gameRoutes = require("./src/api/routes/game.route");
-
+const oracleRoutes = require("./src/api/routes/oracle.route");
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // req input phraser
@@ -47,6 +47,8 @@ app.use(subgraphRoutes);
 app.use(marketRoutes);
 
 app.use(eventRoutes);
+
+app.use(oracleRoutes);
 
 app.use(invalidRoutes);
 
